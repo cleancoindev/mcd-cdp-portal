@@ -15,7 +15,7 @@ Have installed:
 
 ### Installation
 
-1. `git clone https://github.com/makerdao/mcd-cdp-portal.git`
+1. `git clone https://github.com/cleancoindev/mcd-cdp-portal.git`
 
 2. `cd mcd-cdp-portal && yarn`
 
