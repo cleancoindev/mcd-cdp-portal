@@ -3,7 +3,7 @@
 [![Build Status][build]][build-url]
 [![Coverage Status][cover]][cover-url]
 
-## The official Maker dapp for managing Vaults and generating Taotao
+## The official Maker dapp for managing Vaults and generating Tao
 
 ### Prerequisites
 
