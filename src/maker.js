@@ -1,5 +1,5 @@
-import Maker, { USD, DAI } from '@makerdao/dai';
-import McdPlugin, { ETH, BAT, MDAI } from '@makerdao/dai-plugin-mcd';
+import Maker, { USD, TAO } from '@takertao/tao';
+import McdPlugin, { ETH, BAT, MTAO } from '@makerdao/tao-plugin-mct';
 import trezorPlugin from '@makerdao/dai-plugin-trezor-web';
 import ledgerPlugin from '@makerdao/dai-plugin-ledger-web';
 import walletLinkPlugin from '@makerdao/dai-plugin-walletlink';
@@ -13,7 +13,7 @@ import rinkebyAddresses from './references/contracts/rinkeby';
 import goerliAddresses from './references/contracts/goerli';
 import ropstenAddresses from './references/contracts/ropsten';
 
-let _maker;
+let _taker;
 
 const otherNetworksOverrides = [
   {
@@ -31,8 +31,8 @@ const otherNetworksOverrides = [
 }, {});
 
 export function getMaker() {
-  if (_maker === undefined) throw new Error('Maker has not been instatiated');
-  return _maker;
+  if (_taker === undefined) throw new Error('Taker has not been instatiated');
+  return _taker;
 }
 
 const cdpTypes = [
@@ -102,12 +102,12 @@ export async function instantiateMaker({
     config.provider.url = rpcUrl;
   }
 
-  const maker = await Maker.create('http', config);
+  const Taker = await Maker.create('http', config);
 
   // for debugging
-  window.maker = maker;
+  window.taker = taker;
 
-  return maker;
+  return taker;
 }
 
-export { USD, DAI, ETH, BAT, MDAI };
+export { USD, TAO, ETH, BAT, MTAO };
