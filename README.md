@@ -10,7 +10,7 @@
 Have installed:
 
 - [Git](https://git-scm.com/downloads)
-- [Node](https://nodejs.org/en/download/)
+- [Node](https://nodejs.org/en/download/) >10.0
 - [Yarn](https://yarnpkg.com/lang/en/docs/install/)
 
 ### Installation
