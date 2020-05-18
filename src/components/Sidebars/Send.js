@@ -3,7 +3,7 @@ import { Text, Input, Grid, Link, Button } from '@makerdao/ui-components-core';
 import { ReactComponent as PasteIcon } from '../../images/paste.svg';
 import styled from 'styled-components';
 import usePrevious from '../../hooks/usePrevious';
-import useMaker from '../../hooks/useMaker';
+import useTaker from '../../hooks/useTaker';
 import useWalletBalances from '../../hooks/useWalletBalances';
 import useValidatedInput from '../../hooks/useValidatedInput';
 import useLanguage from 'hooks/useLanguage';
@@ -41,7 +41,7 @@ const Send = ({ token, trackBtnClick, reset }) => {
   const maxAmount = token === 'ETH' ? balance.minus(gasCost) : balance;
 
   const displayToken =
-    token === 'MDAI' ? 'DAI' : token === 'MWETH' ? 'WETH' : token;
+    token === 'MTAO' ? 'TAO' : token === 'MWETH' ? 'WETH' : token;
 
   const inRangeAndEth = _val =>
     token === 'ETH' && _val.gt(ZERO) && _val.lte(balance);
