@@ -9,17 +9,17 @@ import useValidatedInput from 'hooks/useValidatedInput';
 import useLanguage from 'hooks/useLanguage';
 import useAnalytics from 'hooks/useAnalytics';
 import ProxyAllowanceToggle from 'components/ProxyAllowanceToggle';
-import { MDAI } from '@makerdao/dai-plugin-mcd';
+import { MTAO } from '@takertao/tap-plugin-mct';
 import SetMax from 'components/SetMax';
 import { safeToFixed } from '../../utils/ui';
 
 const DsrDeposit = ({ savings, reset }) => {
   const { trackBtnClick } = useAnalytics('Deposit', 'Sidebar');
   const { lang } = useLanguage();
-  const { maker } = useMaker();
+  const { taker } = useTaker();
 
-  const { symbol } = MDAI;
-  const displaySymbol = 'DAI';
+  const { symbol } = MTAO;
+  const displaySymbol = 'TAO';
 
   const { daiLockedInDsr } = savings;
   const { MDAI: daiBalance } = useWalletBalances();
@@ -42,9 +42,9 @@ const DsrDeposit = ({ savings, reset }) => {
     },
     {
       maxFloat: () =>
-        lang.formatString(lang.action_sidebar.insufficient_balance, 'DAI'),
+        lang.formatString(lang.action_sidebar.insufficient_balance, 'TAO'),
       allowanceInvalid: () =>
-        lang.formatString(lang.action_sidebar.invalid_allowance, 'DAI')
+        lang.formatString(lang.action_sidebar.invalid_allowance, 'TAO')
     }
   );
 
@@ -81,7 +81,7 @@ const DsrDeposit = ({ savings, reset }) => {
           disabled={!hasAllowance}
           type="number"
           min="0"
-          placeholder="0 DAI"
+          placeholder="0 TAO"
           value={depositAmount}
           onChange={onDepositAmountChange}
           error={depositAmountErrors}
@@ -101,7 +101,7 @@ const DsrDeposit = ({ savings, reset }) => {
         />
       </Grid>
       <ProxyAllowanceToggle
-        token="MDAI"
+        token="MTAO"
         onlyShowAllowance={true}
         trackBtnClick={trackBtnClick}
       />
