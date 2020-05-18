@@ -16,7 +16,7 @@ const Footer = () => {
           <Text t="caption">Status</Text>
         </div>
         <div>
-          <Text t="caption">© 2019 Maker</Text>
+          <Text t="caption">© 2020 TakerTAO</Text>
         </div>
       </Flex>
     </Box>
