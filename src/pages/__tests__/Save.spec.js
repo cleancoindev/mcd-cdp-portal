@@ -55,7 +55,7 @@ beforeAll(async () => {
 afterEach(cleanup);
 
 test('if allowance is 0, show toggle & disable input', async () => {
-  const { getAllByText, findByText, getByTestId, getByRole } = renderWithTaker(
+  const { getAllByText, findByText, getByTestId, getByRole } = renderWithMaker(
     <SidebarProvider>
       <Save viewedAddress={taker.currentAddress()} />
       <SidebarBase />
@@ -176,7 +176,7 @@ test('cannot deposit more than token allowance', async () => {
 
   const multicall = { watch };
 
-  const { getByText, findByText, getByRole, getByTestId } = renderWithTaker(
+  const { getByText, findByText, getByRole, getByTestId } = renderWithMaker(
     React.createElement(() => {
       useMakerMock({ multicall });
       return (
@@ -204,7 +204,7 @@ test('cannot deposit more than token allowance', async () => {
 
 test('display onboarding path if connected address has no proxy', async () => {
   const account = TestAccountProvider.nextAccount();
-  const { findByText } = await renderWithTaker(
+  const { findByText } = await renderWithMaker(
     React.createElement(() => {
       const { taker } = useMakerMock();
       const [flag, setFlag] = React.useState(false);
@@ -231,7 +231,7 @@ test('display onboarding path if connected address has no proxy', async () => {
 test('disable deposit/withdraw buttons if not connected wallet', async () => {
   const defaultAddress = taker.currentAddress();
   const account = TestAccountProvider.nextAccount();
-  const { getByText } = await renderWithTaker(
+  const { getByText } = await renderWithMaker(
     React.createElement(() => {
       const { taker } = useMakerMock();
       const [flag, setFlag] = React.useState(false);
@@ -259,7 +259,7 @@ test('disable deposit/withdraw buttons if not connected wallet', async () => {
 });
 
 test('should not display Save ui for addresses which have no proxy', async () => {
-  const { findByText } = renderWithTaker(<Save viewedAddress={ZERO_ADDRESS} />);
+  const { findByText } = renderWithMaker(<Save viewedAddress={ZERO_ADDRESS} />);
 
   await findByText(
     "This address either doesn't exist or has no DSR account history"
