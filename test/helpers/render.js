@@ -7,7 +7,7 @@ import TransactionManagerProvider from '../../src/providers/TransactionManagerPr
 import TestMakerProvider from './TestMakerProvider';
 import theme from 'styles/theme';
 import { ThemeProvider } from 'styled-components';
-import useMaker from '../../src/hooks/useMaker';
+import useTaker from '../../src/hooks/useTaker';
 
 export const mocks = {
   navigation: { navigate: jest.fn() },
@@ -21,13 +21,13 @@ export const useMakerMock = (mockServices = {}) => {
           watch: () => jest.fn()
         }
   */
-  const { maker } = useMaker();
+  const { taker } = useMaker();
   Object.entries(mockServices).map(([name, methods]) =>
     Object.entries(methods).map(
       ([method, mockFn]) => (maker.service(name)[method] = mockFn())
     )
   );
-  return { maker };
+  return { taker };
 };
 
 export function renderWithMaker(children, providerProps) {
@@ -51,7 +51,7 @@ export function renderWithProviders(children) {
 }
 
 function WaitForAccount({ children, callback }) {
-  const { account } = useMaker();
+  const { account } = useTaker();
   callback(account);
   return account ? children : null;
 }
