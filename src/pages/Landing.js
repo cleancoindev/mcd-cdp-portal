@@ -10,6 +10,7 @@ import { Routes } from '../utils/constants';
 import useLanguage from 'hooks/useLanguage';
 
 import { ReactComponent as BatIcon } from '../images/oasis-tokens/bat.svg';
+import { ReactComponent as TaoIcon } from '../images/oasis-tokens/zrx.svg';
 import { ReactComponent as ZrxIcon } from '../images/oasis-tokens/zrx.svg';
 import { ReactComponent as EthIcon } from '../images/oasis-tokens/eth.svg';
 import { ReactComponent as DaiIcon } from '../images/oasis-tokens/dai.svg';
@@ -112,6 +113,10 @@ const tokens = [
   {
     name: 'Dai',
     icon: DaiIcon
+  },
+  {
+    name: 'Tao',
+    icon: ZrxIcon
   },
   {
     name: 'Ethereum',
@@ -466,7 +471,7 @@ function Landing() {
                 }}
                 onClick={() => {
                   mixpanel.track('btn-click', {
-                    id: 'BorrowDai',
+                    id: 'BorrowTao',
                     product: 'oasis-landing'
                   });
                 }}
