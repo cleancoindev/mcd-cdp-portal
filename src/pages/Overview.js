@@ -146,12 +146,12 @@ function Overview({ viewedAddress }) {
               denom={'USD'}
             />
             <InfoCard
-              title={lang.overview_page.total_dai_debt}
+              title={lang.overview_page.total_tao_debt}
               amount={`${viewedAddressVaults
                 .reduce((acc, { debtValue }) => debtValue.plus(acc), 0)
                 .toBigNumber()
                 .toFixed(2)}`}
-              denom={'DAI'}
+              denom={'TAO'}
             />
           </Grid>
           <Box>
@@ -262,7 +262,7 @@ function Overview({ viewedAddress }) {
                         </Table.td>
                         <Table.td display={{ s: 'none', xl: 'table-cell' }}>
                           <Text t="caption" color="darkLavender">
-                            {debtValue.toBigNumber().toFixed(2)} DAI
+                            {debtValue.toBigNumber().toFixed(2)} TAO
                           </Text>
                         </Table.td>
                         <Table.td>
