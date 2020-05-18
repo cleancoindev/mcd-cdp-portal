@@ -4,10 +4,10 @@ import { useNavigation } from 'react-navi';
 import PageContentLayout from 'layouts/PageContentLayout';
 import AccountSelection from 'components/AccountSelection';
 import { Routes } from '../utils/constants';
-import useMaker from 'hooks/useMaker';
+import useTaker from 'hooks/useTaker';
 
 function Borrow() {
-  const { account } = useMaker();
+  const { account } = useTaker();
   const navigation = useNavigation();
 
   useEffect(() => {
