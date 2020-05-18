@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
 import { useEffect } from 'react';
-import useMaker from 'hooks/useMaker';
+import useTaker from 'hooks/useTaker';
 import { prettifyCurrency, formatSymbol } from 'utils/ui';
 import useLanguage from 'hooks/useLanguage';
 import { uniqueId } from 'utils/dev';
@@ -115,15 +115,15 @@ const formatTxMessage = (lang, { metadata, ...tx }, state) => {
 export const TransactionManagerContext = createContext({});
 
 function TransactionManagerProvider({ children }) {
-  const { maker } = useMaker();
+  const { taker } = useTaker();
   const { lang } = useLanguage();
   const [transactions, setTransactions] = useState([]);
   const [txDrawExpanded, setTxDrawExpanded] = useState(true);
 
   useEffect(() => {
-    if (!maker) return;
+    if (!taker) return;
 
-    const sub = maker
+    const sub = taker
       .service('transactionManager')
       .onTransactionUpdate((tx, state) => {
         setTxDrawExpanded(true);
@@ -179,7 +179,7 @@ function TransactionManagerProvider({ children }) {
       });
 
     return () => sub.unsub();
-  }, [maker, lang]);
+  }, [taker, lang]);
 
   return (
     <TransactionManagerContext.Provider
