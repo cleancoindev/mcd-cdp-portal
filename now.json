@@ -1,6 +1,6 @@
 {
-  "version": 2,
-  "name": "MCD CDP Portal",
+  "version": 1,
+  "name": "MCT CDP Portal",
   "builds": [
     {
       "src": "package.json",
