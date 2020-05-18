@@ -10,17 +10,17 @@ import { renderWithMaker as render } from '../../../../test/helpers/render';
 import Send from '../Send';
 import lang from 'languages';
 import testAccounts from '../../../../node_modules/@makerdao/test-helpers/dist/testAccounts.json';
-import useMaker from '../../../hooks/useMaker';
+import useTaker from '../../../hooks/useTaker';
 import waitForExpect from 'wait-for-expect';
 
 afterEach(cleanup);
 
 test('should send 1 BAT successfully', async () => {
-  let maker;
+  let taker;
   const { getByTestId, getAllByTestId } = render(
     React.createElement(() => {
-      const { maker: maker_ } = useMaker();
-      maker = maker_;
+      const { taker: taker_ } = useTaker();
+      taker = taker_;
       return <Send token="BAT" reset={() => null} />;
     })
   );
@@ -53,8 +53,8 @@ test('should send 1 BAT successfully', async () => {
   });
 
   await waitForExpect(async () => {
-    const afterBal1 = await maker.latest('tokenBalance', addr1, 'BAT');
-    const afterBal2 = await maker.latest('tokenBalance', addr2, 'BAT');
+    const afterBal1 = await taker.latest('tokenBalance', addr1, 'BAT');
+    const afterBal2 = await taker.latest('tokenBalance', addr2, 'BAT');
     expect(
       afterBal1
         .toBigNumber()
@@ -80,8 +80,8 @@ test('basic rendering when sending ETH', async () => {
   getByText(lang.formatString(lang.action_sidebar.send_description, token));
 });
 
-test('basic rendering when sending DAI', async () => {
-  const token = 'MDAI';
+test('basic rendering when sending TAO', async () => {
+  const token = 'MTAO';
   let getByText;
   act(() => {
     const { getByText: _getByText } = render(<Send token={token} />);
@@ -89,9 +89,9 @@ test('basic rendering when sending DAI', async () => {
   });
 
   await waitForElement(() =>
-    getByText(lang.formatString(lang.action_sidebar.send_title, 'DAI'))
+    getByText(lang.formatString(lang.action_sidebar.send_title, 'TAO'))
   );
-  getByText(lang.formatString(lang.action_sidebar.send_description, 'DAI'));
+  getByText(lang.formatString(lang.action_sidebar.send_description, 'TAO'));
 });
 
 test('basic rendering when sending WETH', async () => {
