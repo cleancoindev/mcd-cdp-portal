@@ -1,9 +1,9 @@
 import React from 'react';
 import MakerProvider from '../../src/providers/MakerProvider';
-import useMaker from '../../src/hooks/useMaker';
+import useTaker from '../../src/hooks/useTaker';
 import { ToggleProvider } from '../../src/providers/ToggleProvider';
 
-const WaitForMaker = ({ children }) => (useMaker().maker ? children : null);
+const WaitForMaker = ({ children }) => (useTaker().taker ? children : null);
 
 export default function({ children, waitForAuth, ...otherProps }) {
   return (
