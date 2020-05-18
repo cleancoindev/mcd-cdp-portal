@@ -3,9 +3,9 @@ import { useContext } from 'react';
 import { MakerObjectContext } from '../providers/MakerProvider';
 import { AccountTypes } from '../utils/constants';
 
-function useMaker() {
+function useTaker() {
   const {
-    maker,
+    taker,
     watcher,
     account,
     viewedAddress,
@@ -30,7 +30,7 @@ function useMaker() {
     );
 
   const disconnect = () => {
-    const subprovider = maker.service('accounts').currentWallet();
+    const subprovider = taker.service('accounts').currentWallet();
     if (subprovider.isWalletLink) return disconnectWalletLink(subprovider);
     else if (subprovider.isWalletConnect) disconnectWalletConnect(subprovider);
     else if (
@@ -42,16 +42,16 @@ function useMaker() {
   };
 
   const connectToProviderOfType = async type => {
-    const account = await maker.addAccount({
+    const account = await taker.addAccount({
       type
     });
-    maker.useAccountWithAddress(account.address);
-    const connectedAddress = maker.currentAddress();
+    taker.useAccountWithAddress(account.address);
+    const connectedAddress = taker.currentAddress();
     return connectedAddress;
   };
 
   return {
-    maker,
+    taker,
     watcher,
     authenticated: true,
     connectBrowserProvider,
@@ -71,4 +71,4 @@ function useMaker() {
   };
 }
 
-export default useMaker;
+export default useTaker;
