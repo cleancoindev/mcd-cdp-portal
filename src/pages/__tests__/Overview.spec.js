@@ -2,10 +2,10 @@ import React from 'react';
 import * as navi from 'react-navi';
 import { waitForElement, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { MDAI, ETH } from '@makerdao/dai-plugin-mcd';
+import { MTAO, ETH } from '@takerdao/tao-plugin-mct';
 import Overview from '../Overview';
 import { renderWithVaults } from '../../../test/helpers/render';
-import { instantiateMaker } from '../../maker';
+import { instantiateTaker } from '../../taker';
 import styled from 'styled-components';
 
 jest.mock('react-navi');
@@ -21,17 +21,17 @@ const VAULT2_ETH = '1';
 const VAULT2_ART = '25';
 const VIEWED_ADDRESS = '0x16fb96a5fa0427af0c8f7cf1eb4870231c8154b6';
 
-let maker;
+let taker;
 
 beforeAll(async () => {
-  maker = await instantiateMaker({ network: 'testnet' });
-  await maker
-    .service('mcd:cdpManager')
-    .openLockAndDraw(ILK, ETH(VAULT1_ETH), MDAI(VAULT1_ART));
+  taker = await instantiateTaker({ network: 'testnet' });
+  await taker
+    .service('mct:cdpManager')
+    .openLockAndDraw(ILK, ETH(VAULT1_ETH), MTAO(VAULT1_ART));
 
-  await maker
-    .service('mcd:cdpManager')
-    .openLockAndDraw(ILK, ETH(VAULT2_ETH), MDAI(VAULT2_ART));
+  await taker
+    .service('mct:cdpManager')
+    .openLockAndDraw(ILK, ETH(VAULT2_ETH), MTAO(VAULT2_ART));
 });
 
 afterEach(cleanup);
@@ -46,10 +46,10 @@ test('render overview page and display calculated vault values', async () => {
 
   // Total collateral locked
   getByText('$1050.00 USD');
-  // Total Dai debt
-  getByText(/105.\d{1,2} DAI/);
-  // Vault1 Dai debt
-  getByText(/80.\d{1,2} DAI/);
+  // Total Tao debt
+  getByText(/105.\d{1,2} TAO/);
+  // Vault1 Tao debt
+  getByText(/80.\d{1,2} TAO/);
   // Current ratio
   getByText(/11\d\d.\d\d%/);
   // Deposited
