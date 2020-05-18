@@ -9,8 +9,8 @@ import {
   Button,
   Link
 } from '@makerdao/ui-components-core';
-import { MTAO } from '@makerdao/dai-plugin-mcd';
-import useMaker from 'hooks/useMaker';
+import { MTAO } from '@takertao/tao-plugin-mct';
+import useTaker from 'hooks/useTaker';
 import useLanguage from 'hooks/useLanguage';
 import useAnalytics from 'hooks/useAnalytics';
 import { formatter } from 'utils/ui';
@@ -52,13 +52,13 @@ const CDPCreateConfirmSummary = ({
       lang.verbs.depositing,
       `${prettifyNumber(cdpParams.gemsToLock)} ${selectedIlk.gem}`
     ],
-    [lang.verbs.generating, `${prettifyNumber(cdpParams.daiToDraw)} DAI`],
+    [lang.verbs.generating, `${prettifyNumber(cdpParams.daiToDraw)} TAO`],
     [
       lang.collateralization,
       `${formatter(
         ilkData.calculateCollateralizationRatio(
           BigNumber(cdpParams.gemsToLock),
-          MDAI(cdpParams.daiToDraw)
+          MTAO(cdpParams.daiToDraw)
         )
       )}%`
     ],
@@ -71,7 +71,7 @@ const CDPCreateConfirmSummary = ({
       `$${formatter(
         ilkData.calculateliquidationPrice(
           BigNumber(cdpParams.gemsToLock),
-          MDAI(cdpParams.daiToDraw)
+          MTAO(cdpParams.daiToDraw)
         )
       )}`
     ],
@@ -283,7 +283,7 @@ const CDPCreateConfirmCDP = ({
 
     setEnableSubmit(false);
 
-    const txMgr = maker.service('transactionManager');
+    const txMgr = taker.service('transactionManager');
     txMgr.listen(txObject, {
       pending: tx => setOpenCDPTxHash(tx.hash),
       confirmed: () => {
