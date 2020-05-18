@@ -114,16 +114,16 @@ export default mount({
   ),
 
   [`/${Routes.TRADE}`]: route(() => {
-    window.location.href = 'https://oasis.app/trade';
+    window.location.href = 'https://oasisfork.app/trade';
   }),
 
   [`/${Routes.PRIVACY}`]: route(() => ({
-    title: 'Oasis - Privacy Policy',
+    title: 'Aqua - Privacy Policy',
     view: <Privacy />
   })),
 
   [`/${Routes.TERMS}`]: route(() => ({
-    title: 'Oasis - Terms of Service',
+    title: 'Aqua - Terms of Service',
     view: <Terms />
   }))
 });
