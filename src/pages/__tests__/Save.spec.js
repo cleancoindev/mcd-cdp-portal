@@ -10,17 +10,17 @@ import {
   cleanup
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { MDAI, ETH } from '@makerdao/dai-plugin-mcd';
+import { MTAO, ETH } from '@takertao/tao-plugin-mct';
 import { createCurrency } from '@makerdao/currency';
 import { TestAccountProvider, mineBlocks } from '@makerdao/test-helpers';
 import Save from '../Save';
 import {
   renderWithAccount,
-  renderWithMaker,
+  renderWithTaker,
   mocks,
   useMakerMock
 } from '../../../test/helpers/render';
-import { instantiateMaker } from '../../maker';
+import { instantiateTaker } from '../../taker';
 import { SidebarProvider } from '../../providers/SidebarProvider';
 import SidebarBase from 'components/SidebarBase';
 import { of } from 'rxjs';
@@ -41,30 +41,30 @@ navi.Link = styled.a``;
 
 const AMOUNT = 80.1234567;
 const ILK = 'ETH-A';
-let maker;
+let taker;
 let web3;
 
 beforeAll(async () => {
-  maker = await instantiateMaker({ network: 'testnet' });
-  web3 = maker.service('web3');
-  await await maker
+  taker = await instantiateTaker({ network: 'testnet' });
+  web3 = taker.service('web3');
+  await await taker
     .service('mcd:cdpManager')
-    .openLockAndDraw(ILK, ETH(1), MDAI(AMOUNT));
+    .openLockAndDraw(ILK, ETH(1), MTAO(AMOUNT));
 });
 
 afterEach(cleanup);
 
 test('if allowance is 0, show toggle & disable input', async () => {
-  const { getAllByText, findByText, getByTestId, getByRole } = renderWithMaker(
+  const { getAllByText, findByText, getByTestId, getByRole } = renderWithTaker(
     <SidebarProvider>
-      <Save viewedAddress={maker.currentAddress()} />
+      <Save viewedAddress={taker.currentAddress()} />
       <SidebarBase />
     </SidebarProvider>
   );
 
   await findByText('Savings');
   click(getByTestId('sidebar-deposit-button'));
-  await waitForElement(() => getAllByText('Unlock DAI to continue'));
+  await waitForElement(() => getAllByText('Unlock TAO to continue'));
 
   const depositInput = getByRole('textbox');
   expect(depositInput.disabled).toBe(true);
@@ -80,7 +80,7 @@ test('render save page and perform deposit and withdraw actions', async () => {
     findByText
   } = await renderWithAccount(
     <SidebarProvider>
-      <Save viewedAddress={maker.currentAddress()} />
+      <Save viewedAddress={taker.currentAddress()} />
       <SidebarBase />
     </SidebarProvider>
   );
@@ -88,7 +88,7 @@ test('render save page and perform deposit and withdraw actions', async () => {
   // Wait for page to render
   await waitForElement(() => getByText('Savings'));
   // Initial DSR balance
-  getByText('DAI locked in DSR');
+  getByText('TAO locked in DSR');
   // Savings to date
   getByText('Savings earned to date');
   // Dai Savings Rate
@@ -97,18 +97,18 @@ test('render save page and perform deposit and withdraw actions', async () => {
   getByText('privacy policy');
   // CTA in history table when empty
   await wait(() =>
-    getByText('Deposit Dai to see your first transaction and start earning')
+    getByText('Deposit Tao to see your first transaction and start earning')
   );
 
   /**Deposit */
   click(getByTestId('sidebar-deposit-button'));
   await findByText(/would you like to deposit/);
 
-  // Unlock dai to continue
+  // Unlock tao to continue
   await waitForElement(() => getByTestId('allowance-toggle'));
   const [allowanceToggle] = getAllByTestId('allowance-toggle');
   click(allowanceToggle.children[1]);
-  await waitForElement(() => getByText('DAI unlocked'));
+  await waitForElement(() => getByText('TAO unlocked'));
 
   // Input amount to deposit and click
   const depositInput = getByRole('textbox');
@@ -147,16 +147,16 @@ test('cannot deposit more than token allowance', async () => {
   const tokenBalanceMock = (address, tokens) => {
     return of(
       tokens.map(token => {
-        if (token === 'MDAI') return MDAI(BigNumber(50));
+        if (token === 'MTAO') return MTAO(BigNumber(50));
         else return createCurrency(token)(0);
       })
     );
   };
   const savingsMock = () =>
     of({
-      daiLockedInDsr: MDAI('5000'),
+      taoLockedInDsr: MTAO('5000'),
       annualDaiSavingsRate: BigNumber(1),
-      savingsDai: MDAI('100'),
+      savingsTao: MTAO('100'),
       savingsRateAccumulator: BigNumber(1)
     });
   const watch = () =>
@@ -165,23 +165,23 @@ test('cannot deposit more than token allowance', async () => {
       tokenBalances: tokenBalanceMock,
       tokenAllowance: () => of(BigNumber('10')),
       proxyAddress: () => of(TEST_ADDRESS_PROXY),
-      daiLockedInDsr: () => of(MDAI('100')),
+      taoLockedInDsr: () => of(MTAO('100')),
       collateralTypesPrices: () => of([]),
-      totalDaiSupply: MOCK_OBS_RESPONSE,
+      totalTaoSupply: MOCK_OBS_RESPONSE,
       vaultsCreated: MOCK_OBS_RESPONSE,
-      totalDaiLockedInDsr: MOCK_OBS_RESPONSE,
+      totalTaoLockedInDsr: MOCK_OBS_RESPONSE,
       annualDaiSavingsRate: MOCK_OBS_RESPONSE,
       systemCollateralization: MOCK_OBS_RESPONSE
     });
 
   const multicall = { watch };
 
-  const { getByText, findByText, getByRole, getByTestId } = renderWithMaker(
+  const { getByText, findByText, getByRole, getByTestId } = renderWithTaker(
     React.createElement(() => {
       useMakerMock({ multicall });
       return (
         <SidebarProvider>
-          <Save viewedAddress={maker.currentAddress()} />
+          <Save viewedAddress={taker.currentAddress()} />
           <SidebarBase />
         </SidebarProvider>
       );
@@ -196,7 +196,7 @@ test('cannot deposit more than token allowance', async () => {
   expect(depositInput.disabled).toBe(false);
 
   change(depositInput, { target: { value: '20' } });
-  const warningEl = getByText('Amount is higher than your allowance for DAI');
+  const warningEl = getByText('Amount is higher than your allowance for TAO');
 
   change(depositInput, { target: { value: '10' } });
   expect(warningEl).not.toBeInTheDocument();
@@ -204,12 +204,12 @@ test('cannot deposit more than token allowance', async () => {
 
 test('display onboarding path if connected address has no proxy', async () => {
   const account = TestAccountProvider.nextAccount();
-  const { findByText } = await renderWithMaker(
+  const { findByText } = await renderWithTaker(
     React.createElement(() => {
-      const { maker } = useMakerMock();
+      const { taker } = useMakerMock();
       const [flag, setFlag] = React.useState(false);
       React.useEffect(() => {
-        const accountService = maker.service('accounts');
+        const accountService = taker.service('accounts');
         accountService
           .addAccount('noproxy', {
             type: 'privateKey',
@@ -221,7 +221,7 @@ test('display onboarding path if connected address has no proxy', async () => {
           });
       }, []);
 
-      return flag ? <Save viewedAddress={maker.currentAddress()} /> : <div />;
+      return flag ? <Save viewedAddress={taker.currentAddress()} /> : <div />;
     })
   );
 
@@ -229,14 +229,14 @@ test('display onboarding path if connected address has no proxy', async () => {
 });
 
 test('disable deposit/withdraw buttons if not connected wallet', async () => {
-  const defaultAddress = maker.currentAddress();
+  const defaultAddress = taker.currentAddress();
   const account = TestAccountProvider.nextAccount();
-  const { getByText } = await renderWithMaker(
+  const { getByText } = await renderWithTaker(
     React.createElement(() => {
-      const { maker } = useMakerMock();
+      const { taker } = useMakerMock();
       const [flag, setFlag] = React.useState(false);
       React.useEffect(() => {
-        const accountService = maker.service('accounts');
+        const accountService = taker.service('accounts');
         accountService
           .addAccount('noproxy', {
             type: 'privateKey',
@@ -259,7 +259,7 @@ test('disable deposit/withdraw buttons if not connected wallet', async () => {
 });
 
 test('should not display Save ui for addresses which have no proxy', async () => {
-  const { findByText } = renderWithMaker(<Save viewedAddress={ZERO_ADDRESS} />);
+  const { findByText } = renderWithTaker(<Save viewedAddress={ZERO_ADDRESS} />);
 
   await findByText(
     "This address either doesn't exist or has no DSR account history"
