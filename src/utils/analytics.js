@@ -1,7 +1,7 @@
 import mixpanel from 'mixpanel-browser';
 import ReactGA from 'react-ga';
 import debug from 'debug';
-const log = debug('maker:analytics');
+const log = debug('taker:analytics');
 
 const env = process.env.NODE_ENV === 'production' ? 'prod' : 'test';
 const config = {
