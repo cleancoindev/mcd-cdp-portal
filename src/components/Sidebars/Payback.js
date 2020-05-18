@@ -1,11 +1,11 @@
 import React from 'react';
-import { MDAI } from '@makerdao/dai-plugin-mcd';
+import { MTAO } from '@takertao/tao-plugin-mct';
 import { Text, Input, Grid, Button } from '@makerdao/ui-components-core';
 import debug from 'debug';
 
 import { formatCollateralizationRatio } from 'utils/ui';
 
-import useMaker from 'hooks/useMaker';
+import useTaker from 'hooks/useTaker';
 import useProxy from 'hooks/useProxy';
 import useTokenAllowance from 'hooks/useTokenAllowance';
 import useWalletBalances from 'hooks/useWalletBalances';
@@ -28,11 +28,11 @@ const log = debug('maker:Sidebars/Payback');
 const Payback = ({ vault, reset }) => {
   const { trackBtnClick } = useAnalytics('Payback', 'Sidebar');
   const { lang } = useLanguage();
-  const { maker } = useMaker();
+  const { taker } = useTaker();
   const balances = useWalletBalances();
-  const daiBalance = balances.MDAI;
+  const daiBalance = balances.MTAO;
 
-  const { hasAllowance, hasSufficientAllowance } = useTokenAllowance('MDAI');
+  const { hasAllowance, hasSufficientAllowance } = useTokenAllowance('MTAO');
   const { hasProxy } = useProxy();
 
   let { debtValue, debtFloor, collateralAmount } = vault;
@@ -59,7 +59,7 @@ const Payback = ({ vault, reset }) => {
     {
       maxFloat: amount => {
         return greaterThan(amount, daiBalance)
-          ? lang.formatString(lang.action_sidebar.insufficient_balance, 'DAI')
+          ? lang.formatString(lang.action_sidebar.insufficient_balance, 'TAO')
           : lang.action_sidebar.cannot_payback_more_than_owed;
       },
       dustLimit: () =>
@@ -68,7 +68,7 @@ const Payback = ({ vault, reset }) => {
           subtract(debtValue, debtFloor)
         ),
       allowanceInvalid: () =>
-        lang.formatString(lang.action_sidebar.invalid_allowance, 'DAI')
+        lang.formatString(lang.action_sidebar.invalid_allowance, 'TAO')
     }
   );
 
@@ -101,12 +101,12 @@ const Payback = ({ vault, reset }) => {
   const liquidationPrice = undercollateralized
     ? BigNumber(0)
     : vault.calculateLiquidationPrice({
-        debtValue: MDAI(debtValue.minus(amountToPayback))
+        debtValue: MTAO(debtValue.minus(amountToPayback))
       });
   const collateralizationRatio = undercollateralized
     ? Infinity
     : vault.calculateCollateralizationRatio({
-        debtValue: MDAI(debtValue.minus(amountToPayback))
+        debtValue: MTAO(debtValue.minus(amountToPayback))
       });
   return (
     <Grid gridRowGap="m">
@@ -120,7 +120,7 @@ const Payback = ({ vault, reset }) => {
           value={amount}
           min="0"
           onChange={onAmountChange}
-          placeholder="0.00 DAI"
+          placeholder="0.00 TAO"
           failureMessage={amountErrors}
           data-testid="payback-input"
           after={
@@ -136,7 +136,7 @@ const Payback = ({ vault, reset }) => {
           }
         />
       </Grid>
-      <ProxyAllowanceToggle token="MDAI" trackBtnClick={trackBtnClick} />
+      <ProxyAllowanceToggle token="MTAO" trackBtnClick={trackBtnClick} />
       <Grid gridTemplateColumns="1fr 1fr" gridColumnGap="s">
         <Button
           disabled={!valid}
@@ -161,11 +161,11 @@ const Payback = ({ vault, reset }) => {
         <Info
           title={lang.action_sidebar.dai_balance}
           body={`${daiBalance &&
-            formatter(daiBalance, { precision: long })} DAI`}
+            formatter(daiBalance, { precision: long })} TAO`}
         />
         <Info
           title={lang.action_sidebar.dai_debt}
-          body={`${formatter(debtValue, { precision: long })} DAI`}
+          body={`${formatter(debtValue, { precision: long })} TAO`}
         />
         <Info
           title={lang.action_sidebar.new_liquidation_price}
