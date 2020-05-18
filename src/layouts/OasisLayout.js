@@ -227,7 +227,7 @@ const OasisLayout = ({ children }) => {
             <Link href={`/${Routes.TERMS}`}>{lang.navbar.terms}</Link>
           </nav>
           <div className="copyright">
-            © {new Date().getFullYear()} Maker Ecosystem Growth Holdings, Inc.
+            © {new Date().getFullYear()} TakerTAO 
           </div>
         </Footer>
       </div>
