@@ -226,7 +226,7 @@ export default function({ vault, showSidebar, account, network, cdpOwner }) {
         <CdpViewCard title={lang.cdp_page.outstanding_dai_debt}>
           <ActionContainerRow
             title={lang.cdp_page.outstanding_dai_debt}
-            value={formatter(vault.debtValue) + ' DAI'}
+            value={formatter(vault.debtValue) + ' TAO'}
             button={
               <ActionButton
                 disabled={!account}
@@ -244,7 +244,7 @@ export default function({ vault, showSidebar, account, network, cdpOwner }) {
           />
           <ActionContainerRow
             title={lang.cdp_page.available_generate}
-            value={`${formatter(vault.daiAvailable)} DAI`}
+            value={`${formatter(vault.daiAvailable)} TAO`}
             button={
               <ActionButton
                 disabled={!account || !isOwner}
