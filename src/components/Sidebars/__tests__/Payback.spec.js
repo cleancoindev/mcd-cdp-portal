@@ -6,15 +6,15 @@ import {
   act
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { BAT, USD, MDAI } from '@makerdao/dai-plugin-mcd';
+import { BAT, USD, MTAO } from '@takertao/tao-plugin-mct';
 import { createCurrencyRatio } from '@makerdao/currency';
 import { TestAccountProvider, mineBlocks } from '@makerdao/test-helpers';
-import * as math from '@makerdao/dai-plugin-mcd/dist/math';
+import * as math from '@takertao/tao-plugin-mct/dist/math';
 import waitForExpect from 'wait-for-expect';
 
 import Payback from '../Payback';
 import { renderWithMaker } from '../../../../test/helpers/render';
-import useMaker from '../../../hooks/useMaker';
+import useTaker from '../../../hooks/useTaker';
 import lang from '../../../languages';
 
 jest.mock('react-navi', () => ({
@@ -28,14 +28,14 @@ const LIQUIDATION_RATIO = '200';
 const COL_AMT = 300.123456789012345678;
 
 const collateralAmount = BAT(0); //only used to retrieve gem symbol
-const liquidationRatio = createCurrencyRatio(USD, MDAI)(LIQUIDATION_RATIO);
+const liquidationRatio = createCurrencyRatio(USD, MTAO)(LIQUIDATION_RATIO);
 const collateralValue = USD(12004.938271560493);
 
 const mockVault = {
   id: 1,
   collateralType: ILK,
-  debtValue: MDAI(0),
-  daiAvailable: MDAI(36.014814),
+  debtValue: MTAO(0),
+  daiAvailable: MTAO(36.014814),
   vaultType: ILK,
   collateralAmount,
   liquidationRatio,
@@ -55,8 +55,8 @@ let web3;
 
 const SetupProxyAndAllowance = () => {
   const [changedAccount, setAccountChanged] = useState(false);
-  const { maker } = useMaker();
-  web3 = maker.service('web3');
+  const { taker } = useTaker();
+  web3 = taker.service('web3');
 
   const changeAccount = async () => {
     const accountService = maker.service('accounts');
@@ -127,7 +127,7 @@ xtest('allowance toggle', async () => {
   );
   await mineBlocks(web3);
   expect(allowanceToggle).toHaveTextContent(
-    lang.formatString(lang.action_sidebar.token_unlocked, 'DAI')
+    lang.formatString(lang.action_sidebar.token_unlocked, 'TAO')
   );
 });
 
@@ -135,9 +135,9 @@ test('basic rendering', async () => {
   const { getByText } = renderWithMaker(<Payback vault={mockVault} />);
 
   // this waits for the initial proxy & allowance check to finish
-  await waitForElement(() => getByText(/Unlock DAI/));
+  await waitForElement(() => getByText(/Unlock TAO/));
 
   // these throw errors if they don't match anything
-  getByText('Pay Back DAI');
-  // getByText('7.5 DAI'); // art * rate from mock state
+  getByText('Pay Back TAO');
+  // getByText('7.5 TAO'); // art * rate from mock state
 });
