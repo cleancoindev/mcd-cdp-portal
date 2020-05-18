@@ -8,7 +8,7 @@ import BigNumber from 'bignumber.js';
 import Generate from '../Generate';
 import { renderWithMaker } from '../../../../test/helpers/render';
 import lang from '../../../languages';
-import useMaker from '../../../hooks/useMaker';
+import useTaker from '../../../hooks/useTaker';
 import { createCurrencyRatio } from '@makerdao/currency';
 
 const ILK = 'BAT-A';
@@ -119,7 +119,7 @@ test('verify info container values', async () => {
 });
 
 test('calls the draw function as expected', async () => {
-  let maker;
+  let taker;
   const { getByText, findByText, getByRole } = renderWithMaker(
     React.createElement(() => {
       taker = useTaker().taker;
