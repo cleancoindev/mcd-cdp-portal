@@ -1,6 +1,6 @@
 import { useReducer } from 'react';
 
-import useMaker from './useMaker';
+import useTaker from './useTaker';
 import { TxLifecycle } from 'utils/constants';
 
 const initialState = {
@@ -32,8 +32,8 @@ function reducer(state, action) {
   }
 }
 
-function useMakerTx(txCreator) {
-  const { maker, authenticated } = useMaker();
+function useTakerTx(txCreator) {
+  const { taker, authenticated } = useTaker();
   const [txDetails, dispatch] = useReducer(reducer, initialState);
 
   const clear = () => dispatch({ type: 'clear' });
@@ -49,14 +49,14 @@ function useMakerTx(txCreator) {
 
     if (!authenticated)
       throw new Error(
-        'Cannot send a transaction before maker has finished authenticating'
+        'Cannot send a transaction before taker has finished authenticating'
       );
 
     clear();
 
-    const txObject = txCreator(maker);
-    const sender = maker.currentAddress();
-    maker.service('transactionManager').listen(txObject, {
+    const txObject = txCreator(taker);
+    const sender = taker.currentAddress();
+    taker.service('transactionManager').listen(txObject, {
       initialized: () => {
         dispatch({ type: 'initialized', payload: { sender } });
       },
@@ -76,4 +76,4 @@ function useMakerTx(txCreator) {
   return { ...txDetails, ...TxLifecycle, send, clear };
 }
 
-export default useMakerTx;
+export default useTakerTx;
