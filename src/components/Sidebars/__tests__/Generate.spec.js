@@ -146,5 +146,5 @@ test('calls the draw function as expected', async () => {
   // next, the ilk
   expect(mockDraw.mock.calls[0][1]).toBe(ILK);
   // finally, the draw amount as a currency object
-  expect(mockDraw.mock.calls[0][2]).toMatchObject(MDAI(DRAW_AMT));
+  expect(mockDraw.mock.calls[0][2]).toMatchObject(MTAO(DRAW_AMT));
 });
