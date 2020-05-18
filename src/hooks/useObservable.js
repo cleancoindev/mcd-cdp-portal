@@ -1,17 +1,17 @@
 /// <reference path="../../typings/main.d.ts" />
 import { useEffect, useState } from 'react';
-import useMaker from 'hooks/useMaker';
+import useTaker from 'hooks/useTaker';
 import findIndex from 'lodash/findIndex';
 import debug from 'debug';
 const log = debug('hook:useObservable');
 
 function useObservable(key, ...args) {
-  const { maker } = useMaker();
-  const multicall = maker.service('multicall');
+  const { taker } = useTaker();
+  const multicall = taker.service('multicall');
   const [value, setValue] = useState(undefined);
 
   useEffect(() => {
-    if (!maker || !multicall.watcher) return;
+    if (!taker || !multicall.watcher) return;
     if (findIndex(args, arg => typeof arg === 'undefined') !== -1) return;
 
     log(`Subscribed to observable ${key}(${args && args.join(',')})`);
@@ -32,7 +32,7 @@ function useObservable(key, ...args) {
       setValue(undefined);
     };
     // eslint-disable-next-line
-  }, [maker, multicall?.watcher, key, ...args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg)]); // prettier-ignore
+  }, [taker, multicall?.watcher, key, ...args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg)]); // prettier-ignore
 
   return value;
 }
