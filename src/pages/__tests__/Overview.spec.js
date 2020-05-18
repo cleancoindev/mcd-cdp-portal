@@ -26,11 +26,11 @@ let taker;
 beforeAll(async () => {
   taker = await instantiateTaker({ network: 'testnet' });
   await taker
-    .service('mct:cdpManager')
+    .service('mcd:cdpManager')
     .openLockAndDraw(ILK, ETH(VAULT1_ETH), MTAO(VAULT1_ART));
 
   await taker
-    .service('mct:cdpManager')
+    .service('mcd:cdpManager')
     .openLockAndDraw(ILK, ETH(VAULT2_ETH), MTAO(VAULT2_ART));
 });
 
