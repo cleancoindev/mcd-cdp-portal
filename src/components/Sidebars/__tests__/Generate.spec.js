@@ -2,7 +2,7 @@ import React from 'react';
 import { cleanup, fireEvent, act } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import * as math from '@makerdao/dai-plugin-mcd/dist/math';
-import { BAT, MDAI, USD } from '@makerdao/dai-plugin-mcd';
+import { BAT, MTAO, USD } from '@takertao/tao-plugin-mct';
 import BigNumber from 'bignumber.js';
 
 import Generate from '../Generate';
@@ -37,13 +37,13 @@ afterAll(() => {
 afterEach(cleanup);
 
 const collateralAmount = BAT(COL_AMT);
-const liquidationRatio = createCurrencyRatio(USD, MDAI)(LIQUIDATION_RATIO);
+const liquidationRatio = createCurrencyRatio(USD, MTAO)(LIQUIDATION_RATIO);
 const collateralValue = USD(72.03);
 
 const mockVault = {
   id: 1,
-  debtValue: MDAI(0),
-  daiAvailable: MDAI(36.014814),
+  debtValue: MTAO(0),
+  daiAvailable: MTAO(36.014814),
   vaultType: ILK,
   collateralAmount,
   liquidationRatio,
@@ -115,14 +115,14 @@ test('verify info container values', async () => {
   // new simulated collat ratio
   getByText(/343.00%/);
   // dai available remains the same
-  getByText(/36.014814 DAI/);
+  getByText(/36.014814 TAO/);
 });
 
 test('calls the draw function as expected', async () => {
   let maker;
   const { getByText, findByText, getByRole } = renderWithMaker(
     React.createElement(() => {
-      maker = useMaker().maker;
+      taker = useTaker().taker;
       return <Generate vault={mockVault} reset={() => {}} />;
     })
   );
