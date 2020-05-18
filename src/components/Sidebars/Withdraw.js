@@ -6,7 +6,7 @@ import Info from './shared/Info';
 import InfoContainer from './shared/InfoContainer';
 import SetMax from 'components/SetMax';
 import RatioDisplay, { RatioDisplayTypes } from 'components/RatioDisplay';
-import useMaker from 'hooks/useMaker';
+import useTaker from 'hooks/useTaker';
 import useLanguage from 'hooks/useLanguage';
 import useAnalytics from 'hooks/useAnalytics';
 import useValidatedInput from 'hooks/useValidatedInput';
@@ -19,7 +19,7 @@ const { long } = decimalRules;
 const Withdraw = ({ vault, reset }) => {
   const { trackBtnClick } = useAnalytics('Withdraw', 'Sidebar');
   const { lang } = useLanguage();
-  const { maker } = useMaker();
+  const { taker } = useTaker();
 
   let {
     vaultType,
