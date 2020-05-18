@@ -29,7 +29,7 @@ import FullScreenAction from './CDPDisplay/FullScreenAction';
 import useCdpTypes from '../hooks/useCdpTypes';
 import { watch } from 'hooks/useObservable';
 
-const migrateUrl = 'https://oasis.app/trade/account';
+const migrateUrl = '<website address of the app for Oasis/Aqua>';
 
 const StyledCardBody = styled(CardBody)`
   cursor: pointer;
@@ -141,12 +141,12 @@ const WalletBalances = ({ hasActiveAccount, closeSidebarDrawer }) => {
         if (token !== 'ETH' && token !== 'MDAI' && !balanceGtZero) return acc;
         const symbol = formatSymbol(token);
 
-        const tokenIsDaiOrDsr =
-          token === 'MDAI' ||
-          token === 'DAI' ||
+        const tokenIsTaoOrDsr =
+          token === 'MTAO' ||
+          token === 'TAO' ||
           token === 'SAI' ||
           token === 'DSR';
-        const usdRatio = tokenIsDaiOrDsr
+        const usdRatio = tokenIsTaoOrDsr
           ? new BigNumber(1)
           : token === 'MWETH'
           ? uniqueFeeds['ETH']
