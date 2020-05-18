@@ -7,12 +7,12 @@ import {
   waitForElement
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { MDAI, ETH } from '@makerdao/dai-plugin-mcd';
+import { MTAO, ETH } from '@takertao/tao-plugin-mct';
 import { mineBlocks } from '@makerdao/test-helpers';
 
 import CDPDisplay from '../';
 import { renderWithAccount } from '../../../../test/helpers/render';
-import { instantiateMaker } from '../../../maker';
+import { instantiateTaker } from '../../../taker';
 import { SidebarProvider } from '../../../providers/SidebarProvider';
 import SidebarBase from 'components/SidebarBase';
 import * as navi from 'react-navi';
@@ -28,7 +28,7 @@ const ILK = 'ETH-A';
 const VAULT1_ETH = '5';
 const AMOUNT = 210;
 
-let maker;
+let taker;
 let web3;
 
 beforeAll(async () => {
@@ -36,7 +36,7 @@ beforeAll(async () => {
   web3 = maker.service('web3');
   await maker
     .service('mcd:cdpManager')
-    .openLockAndDraw(ILK, ETH(VAULT1_ETH), MDAI(AMOUNT));
+    .openLockAndDraw(ILK, ETH(VAULT1_ETH), MTAO(AMOUNT));
 });
 
 afterEach(cleanup);
@@ -69,9 +69,9 @@ test('Vault Display page and actions', async () => {
     within(getBalancesEl()).getByText('ETH').nextElementSibling
       .nextElementSibling.textContent;
   const getDaiBal = () =>
-    within(getBalancesEl()).getByText('DAI').nextElementSibling.textContent;
+    within(getBalancesEl()).getByText('TAO').nextElementSibling.textContent;
   const getDaiUsdValue = () =>
-    within(getBalancesEl()).getByText('DAI').nextElementSibling
+    within(getBalancesEl()).getByText('TAO').nextElementSibling
       .nextElementSibling.textContent;
 
   expect(getEthBal()).toContain('89.');
@@ -115,7 +115,7 @@ test('Vault Display page and actions', async () => {
 
   // amount to generate before
   const generateLabel = getByText('Available to generate');
-  expect(generateLabel.nextElementSibling.textContent).toBe('522.99 DAI');
+  expect(generateLabel.nextElementSibling.textContent).toBe('522.99 TAO');
 
   // submit generate
   change(getByRole('textbox'), { target: { value: '25' } });
@@ -125,7 +125,7 @@ test('Vault Display page and actions', async () => {
   //check event history
   const genEvent = await findByText('25.00', {}, { timeout: 15000 });
   expect(genEvent.parentElement.textContent).toBe(
-    'Generated 25.00 new Dai from Vault'
+    'Generated 25.00 new Tao from Vault'
   );
 
   // check updated balances
@@ -137,8 +137,8 @@ test('Vault Display page and actions', async () => {
   await findByText(/would you like to pay back/);
 
   // Outstanding Dai debt before
-  const [, debtLabel] = getAllByText('Outstanding Dai debt');
-  expect(debtLabel.nextElementSibling.textContent).toBe('235.00 DAI');
+  const [, debtLabel] = getAllByText('Outstanding Tao debt');
+  expect(debtLabel.nextElementSibling.textContent).toBe('235.00 TAO');
 
   // must unlock Dai first
   await waitForElement(() => getByTestId('allowance-toggle'));
@@ -147,7 +147,7 @@ test('Vault Display page and actions', async () => {
     expect(allowanceBtn).not.toHaveAttribute('disabled');
   });
   click(allowanceBtn);
-  await findByText('DAI unlocked');
+  await findByText('TAO unlocked');
 
   // submit pay back
   change(getByRole('textbox'), { target: { value: '1.23' } });
@@ -161,7 +161,7 @@ test('Vault Display page and actions', async () => {
 
   //check event history
   const pbEvent = await findByText('1.23', {}, { timeout: 15000 });
-  expect(pbEvent.parentElement.textContent).toBe('Repaid 1.23 Dai to Vault');
+  expect(pbEvent.parentElement.textContent).toBe('Repaid 1.23 Tao to Vault');
 
   // check updated balances
   expect(getDaiBal()).toContain('233.');
