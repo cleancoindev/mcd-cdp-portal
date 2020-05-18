@@ -15,9 +15,7 @@ Have installed:
 
 ### Installation
 
-1. `git clone https://github.com/cleancoindev/mct-cdp-portal.git`
-
-2. `cd mcd-cdp-portal && yarn`
+1.  yarn`
 
 ### Running Oasis
 
