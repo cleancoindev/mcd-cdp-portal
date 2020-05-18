@@ -1,5 +1,5 @@
 import { useReducer, useCallback } from 'react';
-import useMaker from 'hooks/useMaker';
+import useTaker from 'hooks/useTaker';
 import useModal from 'hooks/useModal';
 import { AccountTypes } from 'utils/constants';
 import { addTokenBalances } from 'utils/ethereum';
@@ -112,12 +112,12 @@ function useHardwareWallet({
   path,
   accountsLength = DEFAULT_ACCOUNTS_LENGTH
 }) {
-  const { maker } = useMaker();
+  const { taker } = useTaker();
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const connect = useCallback(() => {
     dispatch({ type: 'connect-start' });
-    return maker.addAccount({
+    return taker.addAccount({
       type,
       path,
       accountsOffset: 0,
@@ -131,12 +131,12 @@ function useHardwareWallet({
         });
       }
     });
-  }, [accountsLength, maker, path, type]);
+  }, [accountsLength, taker, path, type]);
 
   const fetchMore = useCallback(() => {
     return new Promise((resolve, reject) => {
       dispatch({ type: 'fetch-start' });
-      maker
+      taker
         .addAccount({
           type,
           path,
@@ -160,7 +160,7 @@ function useHardwareWallet({
           reject(err);
         });
     });
-  }, [accountsLength, maker, path, type, state.accounts.length]);
+  }, [accountsLength, taker, path, type, state.accounts.length]);
 
   function pickAccount(address, page, numAccountsPerFetch, numAccountsPerPage) {
     const fetchNumber = Math.floor(
