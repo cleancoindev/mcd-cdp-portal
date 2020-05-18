@@ -1,7 +1,7 @@
 import React from 'react';
 import { cleanup, fireEvent, act } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { BAT, USD, MDAI } from '@makerdao/dai-plugin-mcd';
+import { BAT, USD, MTAO } from '@takertao/tao-plugin-mct';
 import { fromWei } from '@makerdao/dai-plugin-mcd/dist/utils';
 import * as math from '@makerdao/dai-plugin-mcd/dist/math';
 import { createCurrency, createCurrencyRatio } from '@makerdao/currency';
@@ -82,7 +82,7 @@ const mockVault = {
 // Define mock observable schemas
 const proxyAddress = () => of(TEST_ADDRESS_PROXY);
 const tokenAllowance = () => of(BigNumber(Infinity));
-const daiLockedInDsr = () => of(MDAI(DSR_AMT));
+const daiLockedInDsr = () => of(MTAO(DSR_AMT));
 const tokenBalances = (address, tokens) => {
   return of(
     tokens.map(token => {
