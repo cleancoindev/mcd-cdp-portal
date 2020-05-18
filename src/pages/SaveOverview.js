@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import useMaker from 'hooks/useMaker';
+import useTaker from 'hooks/useTaker';
 import PageContentLayout from 'layouts/PageContentLayout';
 import AccountSelection from 'components/AccountSelection';
 import { Routes } from 'utils/constants';
 
 function SaveOverview() {
-  const { account, network, navigation } = useMaker();
+  const { account, network, navigation } = useTaker();
 
   useEffect(() => {
     if (account && account.address) {
