@@ -9,7 +9,7 @@ import {
   Button,
   Link
 } from '@makerdao/ui-components-core';
-import { MDAI } from '@makerdao/dai-plugin-mcd';
+import { MTAO } from '@makerdao/dai-plugin-mcd';
 import useMaker from 'hooks/useMaker';
 import useLanguage from 'hooks/useLanguage';
 import useAnalytics from 'hooks/useAnalytics';
