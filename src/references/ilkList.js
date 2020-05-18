@@ -1,4 +1,4 @@
-import { ETH, BAT } from '@makerdao/dai-plugin-mcd';
+import { ETH, BAT } from '@takertao/tao-plugin-mct';
 
 export default [
   {
