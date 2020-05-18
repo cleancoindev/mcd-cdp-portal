@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Grid, Text, Input, Card } from '@makerdao/ui-components-core';
-import { MDAI } from '@makerdao/dai-plugin-mcd';
+import { MTAO } from '@takertao/tao-plugin-mct';
 import { greaterThanOrEqual } from 'utils/bignumber';
 import { TextBlock } from 'components/Typography';
 import {
@@ -25,7 +25,7 @@ function OpenCDPForm({
   ilkData
 }) {
   const { lang } = useLanguage();
-  const { calculateMaxDai, liquidationRatio, debtFloor } = ilkData;
+  const { calculateMaxTao, liquidationRatio, debtFloor } = ilkData;
 
   const daiAvailable = calculateMaxDai(BigNumber(cdpParams.gemsToLock || '0'));
   const belowDustLimit = debtFloor?.gt(BigNumber(cdpParams.daiToDraw));
@@ -99,7 +99,7 @@ function OpenCDPForm({
       <Input
         key="daiToDraw"
         name="daiToDraw"
-        after="DAI"
+        after="TAO"
         width={300}
         type="number"
         failureMessage={
@@ -130,7 +130,7 @@ function OpenCDPForm({
               });
             }}
           >
-            {formatter(daiAvailable)} DAI
+            {formatter(daiAvailable)} TAO
           </Text>
         </Box>
         <RatioDisplay
@@ -185,7 +185,7 @@ const CDPCreateDepositSidebar = ({
   let liquidationPriceDisplay = formatter(
     ilkData.calculateliquidationPrice(
       currency(cdpParams.gemsToLock || '0'),
-      MDAI(cdpParams.daiToDraw || '0')
+      MTAO(cdpParams.daiToDraw || '0')
     )
   );
   if ([Infinity, 'Infinity'].includes(liquidationPriceDisplay))
@@ -256,7 +256,7 @@ const CDPCreateDeposit = ({
 
   const collateralizationRatio = ilkData.calculateCollateralizationRatio(
     BigNumber(cdpParams.gemsToLock || '0'),
-    MDAI(cdpParams.daiToDraw || '0')
+    MTAO(cdpParams.daiToDraw || '0')
   );
 
   function handleInputChange({ target }) {
