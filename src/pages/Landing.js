@@ -116,7 +116,7 @@ const tokens = [
   },
   {
     name: 'Tao',
-    icon: ZrxIcon
+    icon: TaoIcon
   },
   {
     name: 'Ethereum',
@@ -411,7 +411,7 @@ function Landing() {
 
   return (
     <OasisLayout>
-      <SEO title="Oasis" />
+      <SEO title="Aqua" />
       <Hero>{lang.landing_page.headline}</Hero>
       <Cards>
         <Card
