@@ -12,7 +12,7 @@ import { gaInit, mixpanelInit, fathomInit } from './utils/analytics';
 import LoadingLayout from 'layouts/LoadingLayout';
 import ErrorBoundary from './ErrorBoundary';
 import debug from 'debug';
-const log = debug('maker:App');
+const log = debug('taker:App');
 
 const Body = styled.div`
   display: flex;
