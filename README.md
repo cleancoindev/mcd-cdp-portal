@@ -29,7 +29,7 @@ For hardware wallet support:
 
 ### Developing with a local testchain
 
-1. Clone either [tao.js](https://github.com/makerdao/tao.js) or the [testchain](https://github.com/makerdao/testchain) repo
+1. Clone either [tao.js](https://github.com/cleancoindev/tao.js) or the [testchain](https://github.com/cleancoindev/testchain) repo
 
 2. Start the testchain
    1. If using tao.js, run `yarn && yarn testchain`
@@ -37,9 +37,9 @@ For hardware wallet support:
 
 3) Navigate to `http://localhost:3000?network=testnet&simplePriceFeeds=1`
 
-_see [this PR](https://github.com/makerdao/mcd-cdp-portal/pull/26) for more details_
+_see [this PR](https://github.com/cleancoindev/mct-cdp-portal/pull/26) for more details_
 
-[build]: https://circleci.com/gh/makerdao/mcd-cdp-portal.svg?style=svg
-[build-url]: https://circleci.com/gh/makerdao/mcd-cdp-portal
-[cover]: https://codecov.io/gh/makerdao/mcd-cdp-portal/branch/master/graph/badge.svg
-[cover-url]: https://codecov.io/gh/makerdao/mcd-cdp-portal
+[build]: https://circleci.com/gh/cleancoindev/mct-cdp-portal.svg?style=svg
+[build-url]: https://circleci.com/gh/cleancoindev/mct-cdp-portal
+[cover]: https://codecov.io/gh/cleancoindev/mct-cdp-portal/branch/master/graph/badge.svg
+[cover-url]: https://codecov.io/gh/cleancoindev/mct-cdp-portal
