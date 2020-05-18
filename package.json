@@ -1,14 +1,12 @@
 {
-  "name": "mcd-cdp-portal",
-  "description": "The primary web interface for interacting with the Multi-Collateral Dai smart contract system.",
+  "name": "mct-cdp-portal",
+  "description": "The primary web interface for interacting with the Multi-Collateral Tao smart contract system.",
   "version": "0.2.6-rc.1",
   "license": "AGPL",
   "private": true,
-  "homepage": "https://mcd.makerdao.com",
+  "homepage": "https://mct.takertao.com",
   "contributors": [
-    "Michael Elliot <mike@makerdao.com>",
-    "Joshua Levine <joshua@makerdao.com>",
-    "Adrian le Bas <adrian@makerdao.com>"
+
   ],
   "dependencies": {
     "@craco/craco": "^5.4.0",
