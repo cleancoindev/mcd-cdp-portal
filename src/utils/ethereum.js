@@ -1,5 +1,5 @@
 import round from 'lodash/round';
-import { ETH, BAT } from '../maker';
+import { ETH, BAT } from '../taker';
 import BigNumber from 'bignumber.js';
 import Web3 from 'web3';
 
@@ -37,11 +37,11 @@ export const addTokenBalances = async account => {
   return {
     ...account,
     ethBalance: round(
-      await toNum(window.maker.getToken(ETH).balanceOf(account.address)),
+      await toNum(window.taker.getToken(ETH).balanceOf(account.address)),
       2
     ),
     batBalance: round(
-      await toNum(window.maker.getToken(BAT).balanceOf(account.address)),
+      await toNum(window.taker.getToken(BAT).balanceOf(account.address)),
       2
     )
   };
@@ -109,8 +109,8 @@ export async function isEthereumProviderApproved() {
   return addresses.length > 0 ? true : false;
 }
 
-export const calculateGasCost = async (maker, gasLimit = 21000) => {
+export const calculateGasCost = async (taker, gasLimit = 21000) => {
   const _gasLimit = BigNumber(gasLimit);
-  const gasPrice = await maker.service('gas').getGasPrice('fast');
+  const gasPrice = await taker.service('gas').getGasPrice('fast');
   return _gasLimit.times(gasPrice).shiftedBy(-18);
 };
