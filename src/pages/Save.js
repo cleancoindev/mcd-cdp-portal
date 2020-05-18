@@ -18,7 +18,7 @@ import {
 import FullScreenAction from 'components/CDPDisplay/FullScreenAction';
 import History from 'components/CDPDisplay/History';
 import DSRInfo from 'components/DSRInfo';
-import useMaker from 'hooks/useMaker';
+import useTaker from 'hooks/useTaker';
 import useLanguage from 'hooks/useLanguage';
 import useDsrEventHistory from 'hooks/useDsrEventHistory';
 import useModal from 'hooks/useModal';
@@ -33,7 +33,7 @@ import { NotificationList, SAFETY_LEVELS } from 'utils/constants';
 
 function Save({ viewedAddress }) {
   const { lang } = useLanguage();
-  const { account, network } = useMaker();
+  const { account, network } = useTaker();
   const { addNotification, deleteNotifications } = useNotification();
 
   useEffect(() => {
