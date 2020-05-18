@@ -1,11 +1,11 @@
 import React from 'react';
 import BigNumber from 'bignumber.js';
-import { MDAI } from '@makerdao/dai-plugin-mcd';
+import { MTAO } from '@takertao/tao-plugin-mct';
 import { Text, Input, Grid, Button } from '@makerdao/ui-components-core';
 import Info from './shared/Info';
 import InfoContainer from './shared/InfoContainer';
 import RatioDisplay, { RatioDisplayTypes } from 'components/RatioDisplay';
-import useMaker from 'hooks/useMaker';
+import useTaker from 'hooks/useTaker';
 import useLanguage from 'hooks/useLanguage';
 import useAnalytics from 'hooks/useAnalytics';
 import useValidatedInput from 'hooks/useValidatedInput';
@@ -17,7 +17,7 @@ const { long, medium } = decimalRules;
 const Generate = ({ vault, reset }) => {
   const { trackBtnClick } = useAnalytics('Generate', 'Sidebar');
   const { lang } = useLanguage();
-  const { maker } = useMaker();
+  const { taker } = useTaker();
 
   let {
     debtValue,
@@ -59,7 +59,7 @@ const Generate = ({ vault, reset }) => {
   const undercollateralized = daiAvailable.lt(amount);
 
   const generate = () => {
-    maker.service('mcd:cdpManager').draw(vault.id, vaultType, MDAI(amount));
+    maker.service('mcd:cdpManager').draw(vault.id, vaultType, MTAO(amount));
     reset();
   };
 
@@ -83,7 +83,7 @@ const Generate = ({ vault, reset }) => {
           value={amount}
           min="0"
           onChange={onAmountChange}
-          placeholder="0.00 DAI"
+          placeholder="0.00 TAO"
           failureMessage={failureMessage}
         />
         <RatioDisplay
