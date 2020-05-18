@@ -11,7 +11,7 @@ import useValidatedInput from '../../hooks/useValidatedInput';
 import SetMax from '../SetMax';
 import useTokenAllowance from 'hooks/useTokenAllowance';
 
-function DepositDaiForm({
+function DepositTaoForm({
   depositAmount,
   daiBalance,
   onDepositAmountChange,
@@ -22,9 +22,9 @@ function DepositDaiForm({
 
   const fields = [
     [
-      lang.formatString(lang.dsr_deposit.deposit_form_title, 'DAI'),
+      lang.formatString(lang.dsr_deposit.deposit_form_title, 'TAO'),
       <Input
-        key="daiinput"
+        key="taoinput"
         name="gemsToLock"
         after={<SetMax onClick={setDepositMax} />}
         type="number"
@@ -32,12 +32,12 @@ function DepositDaiForm({
         onChange={onDepositAmountChange}
         failureMessage={depositAmountErrors}
         min="0"
-        placeholder="0 DAI"
+        placeholder="0 TAO"
       />,
       <Box key="ba">
         <Text t="subheading">{lang.your_balance} </Text>
         <Text t="caption" display="inline-block" ml="s" color="darkLavender">
-          {prettifyNumber(daiBalance)} {'DAI'}
+          {prettifyNumber(daiBalance)} {'TAO'}
         </Text>
       </Box>
     ]
@@ -73,9 +73,9 @@ function DepositDaiForm({
 const DSRDepositCreate = ({ dispatch, onClose }) => {
   const { lang } = useLanguage();
   const balances = useWalletBalances();
-  const { MDAI } = balances;
-  const daiBalance = MDAI.toFixed(6);
-  const { hasSufficientAllowance } = useTokenAllowance('MDAI');
+  const { MTAO } = balances;
+  const daiBalance = MTAO.toFixed(6);
+  const { hasSufficientAllowance } = useTokenAllowance('MTAO');
 
   const [
     depositAmount,
@@ -87,26 +87,26 @@ const DSRDepositCreate = ({ dispatch, onClose }) => {
     {
       isFloat: true,
       minFloat: 0.0,
-      maxFloat: MDAI && MDAI.toNumber(),
+      maxFloat: MTAO && MTAO.toNumber(),
       custom: {
         allowanceInvalid: value => !hasSufficientAllowance(value)
       }
     },
     {
       maxFloat: () =>
-        lang.formatString(lang.action_sidebar.insufficient_balance, 'DAI'),
+        lang.formatString(lang.action_sidebar.insufficient_balance, 'TAO'),
       allowanceInvalid: () =>
-        lang.formatString(lang.action_sidebar.invalid_allowance, 'DAI')
+        lang.formatString(lang.action_sidebar.invalid_allowance, 'TAO')
     }
   );
 
   const setDepositMax = useCallback(() => {
-    if (MDAI) {
-      setDepositAmount(MDAI.toNumber().toString());
+    if (MTAO) {
+      setDepositAmount(MTAO.toNumber().toString());
     } else {
       setDepositAmount('0');
     }
-  }, [MDAI, setDepositAmount]);
+  }, [MTAO, setDepositAmount]);
   return (
     <Box
       maxWidth="1040px"
@@ -120,7 +120,7 @@ const DSRDepositCreate = ({ dispatch, onClose }) => {
       />
       <Grid gridGap="m" my="l">
         <Card px={{ s: 'm', m: 'xl' }} py={{ s: 'm', m: 'l' }}>
-          <DepositDaiForm
+          <DepositTaoForm
             daiBalance={daiBalance}
             setDepositMax={setDepositMax}
             depositAmount={depositAmount}
