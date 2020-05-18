@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import useActionState from 'hooks/useActionState';
-import useMaker from 'hooks/useMaker';
+import useTaker from 'hooks/useTaker';
 import { watch } from 'hooks/useObservable';
 import usePrevious from 'hooks/usePrevious';
 import debug from 'debug';
 const log = debug('maker:useProxy');
 
 export default function useProxy() {
-  const { maker, account } = useMaker();
+  const { taker, account } = useTaker();
   const [startedWithoutProxy, setStartedWithoutProxy] = useState(false);
   const [startingBlockHeight, setStartingBlockHeight] = useState(0);
   const [proxyDeployed, setProxyDeployed] = useState(false);
@@ -26,9 +26,9 @@ export default function useProxy() {
     if (!account) return null;
     if (proxyAddress) return proxyAddress;
 
-    const txPromise = maker.service('proxy').ensureProxy();
+    const txPromise = taker.service('proxy').ensureProxy();
 
-    const txMgr = maker.service('transactionManager');
+    const txMgr = taker.service('transactionManager');
     txMgr.listen(txPromise, {
       mined: tx => {
         setStartingBlockHeight(tx._blockNumberWhenMined);
