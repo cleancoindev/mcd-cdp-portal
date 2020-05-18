@@ -170,15 +170,15 @@ const CDPCreateConfirmSummary = ({
 const CDPCreateConfirmed = ({ hash, isFirstVault, onClose, txState }) => {
   const { trackBtnClick } = useAnalytics('ConfirmVault', 'VaultCreate');
   const { lang } = useLanguage();
-  const { maker } = useMaker();
+  const { taker } = useTaker();
   const [waitTime, setWaitTime] = useState('8 minutes');
 
-  const networkId = maker.service('web3').networkId();
+  const networkId = taker.service('web3').networkId();
   const isTestchain = ![1, 42].includes(networkId);
   useEffect(() => {
     (async () => {
       // this is the default transaction speed
-      const waitTime = await maker.service('gas').getWaitTime('fast');
+      const waitTime = await taker.service('gas').getWaitTime('fast');
       const minutes = Math.round(waitTime);
       const seconds = Math.round(waitTime * 6) * 10;
 
@@ -262,7 +262,7 @@ const CDPCreateConfirmCDP = ({
   collateralTypesData,
   onClose
 }) => {
-  const { maker } = useMaker();
+  const { taker } = useTaker();
   const [enableSubmit, setEnableSubmit] = useState(true);
 
   const { gemsToLock, daiToDraw, txState } = cdpParams;
@@ -273,7 +273,7 @@ const CDPCreateConfirmCDP = ({
     const { type } = payload;
     if (type !== 'increment-step') return dispatch(payload);
 
-    const txObject = maker
+    const txObject = taker
       .service('mcd:cdpManager')
       .openLockAndDraw(
         selectedIlk.symbol,
