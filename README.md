@@ -17,7 +17,7 @@ Have installed:
 
 1.  yarn`
 
-### Running Oasis
+### Running Aqua
 
 - `yarn start`
 - Go to http://localhost:3000
