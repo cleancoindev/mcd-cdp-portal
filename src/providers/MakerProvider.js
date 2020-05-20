@@ -1,17 +1,17 @@
 import React, { createContext, useState, useEffect, useCallback } from 'react';
 import { useNavigation as useNavigationBase } from 'react-navi';
 import { mixpanelIdentify } from '../utils/analytics';
-import { instantiateTaker } from '../taker';
+import { instantiateMaker } from '../maker';
 import PropTypes from 'prop-types';
 import {
   checkEthereumProvider,
   browserEthereumProviderAddress
 } from '../utils/ethereum';
 import LoadingLayout from '../layouts/LoadingLayout';
-import schemas from '@takertao/tao-plugin-mcd/dist/schemas';
+import schemas from '@takertao/dai-plugin-mcd/dist/schemas';
 import useObservable, { watch } from 'hooks/useObservable';
 import debug from 'debug';
-const log = debug('taker:MakerProvider');
+const log = debug('maker:MakerProvider');
 
 export const MakerObjectContext = createContext();
 
@@ -30,7 +30,7 @@ function MakerProvider({
 }) {
   const [account, setAccount] = useState(null);
   const [txLastUpdate, setTxLastUpdate] = useState({});
-  const [taker, setTaker] = useState(null);
+  const [maker, setMaker] = useState(null);
   const [watcher, setWatcher] = useState(null);
   const navigation = useNavigation(network, mocks);
   const initAccount = account => {
@@ -39,11 +39,11 @@ function MakerProvider({
   };
 
   const connectBrowserProvider = useCallback(async () => {
-    const networkId = taker.service('web3').networkId();
+    const networkId = maker.service('web3').networkId();
     const browserProvider = await checkEthereumProvider();
 
     function getMatchedAccount(address) {
-      return taker
+      return maker
         .listAccounts()
         .find(acc => acc.address.toUpperCase() === address.toUpperCase());
     }
@@ -62,24 +62,24 @@ function MakerProvider({
       );
 
     let existingAccount;
-    if (taker.service('accounts').hasAccount()) {
+    if (maker.service('accounts').hasAccount()) {
       existingAccount = getMatchedAccount(browserProvider.address);
       if (existingAccount) {
         log(`Using existing SDK account: ${existingAccount.address}`);
-        taker.useAccountWithAddress(existingAccount.address);
+        maker.useAccountWithAddress(existingAccount.address);
       }
     }
     if (!existingAccount) {
       log('Adding new browser account to SDK');
-      await taker.addAccount({
+      await maker.addAccount({
         type: 'browser',
         autoSwitch: true
       });
     }
 
-    const connectedAddress = taker.currentAddress();
+    const connectedAddress = maker.currentAddress();
     return connectedAddress;
-  }, [taker]);
+  }, [maker]);
 
   useEffect(() => {
     (async () => {
@@ -109,9 +109,9 @@ function MakerProvider({
   }, [backendEnv, network, testchainId]);
 
   useEffect(() => {
-    if (!taker) return;
-    if (taker.service('accounts').hasAccount()) {
-      initAccount(taker.currentAccount());
+    if (!maker) return;
+    if (maker.service('accounts').hasAccount()) {
+      initAccount(maker.currentAccount());
     } else {
       // Reconnect browser provider if active address matches last connected
       const lastType = sessionStorage.getItem('lastConnectedWalletType');
@@ -130,7 +130,7 @@ function MakerProvider({
       }
     }
 
-    taker.on('accounts/CHANGE', eventObj => {
+    maker.on('accounts/CHANGE', eventObj => {
       const { account } = eventObj.payload;
       sessionStorage.setItem('lastConnectedWalletType', account.type);
       sessionStorage.setItem(
@@ -141,18 +141,18 @@ function MakerProvider({
       initAccount(account);
     });
 
-    const txManagerSub = taker
+    const txManagerSub = maker
       .service('transactionManager')
       .onTransactionUpdate((tx, state) => {
         if (state === 'mined') {
           const id = tx.metadata?.id;
           if (id) {
             log(`Resetting event history cache for Vault #${id}`);
-            taker.service('mcd:cdpManager').resetEventHistoryCache(id);
+            maker.service('mcd:cdpManager').resetEventHistoryCache(id);
             setTxLastUpdate(current => ({ ...current, [id]: Date.now() }));
           } else if (tx.metadata?.contract === 'PROXY_ACTIONS_DSR') {
             log('Resetting savings event history cache');
-            taker.service('mcd:savings').resetEventHistoryCache();
+            maker.service('mcd:savings').resetEventHistoryCache();
             setTxLastUpdate(current => ({ ...current, save: Date.now() }));
           }
         }
@@ -161,12 +161,12 @@ function MakerProvider({
     return () => {
       txManagerSub.unsub();
     };
-  }, [taker, connectBrowserProvider]);
+  }, [maker, connectBrowserProvider]);
 
   return (
     <MakerObjectContext.Provider
       value={{
-        taker,
+        maker,
         watcher,
         account,
         network,
@@ -176,7 +176,7 @@ function MakerProvider({
         navigation
       }}
     >
-      {taker ? children : <LoadingLayout />}
+      {maker ? children : <LoadingLayout />}
     </MakerObjectContext.Provider>
   );
 }

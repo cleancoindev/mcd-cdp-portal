@@ -21,16 +21,28 @@ import FullScreenAction from './FullScreenAction';
 import debug from 'debug';
 import useNotification from 'hooks/useNotification';
 import useAnalytics from 'hooks/useAnalytics';
+import useEmergencyShutdown from 'hooks/useEmergencyShutdown';
 import { FeatureFlags } from 'utils/constants';
 import { NotificationList, SAFETY_LEVELS } from 'utils/constants';
 import { formatter } from 'utils/ui';
-
+import BigNumber from 'bignumber.js';
+import NextPriceLiquidation from '../NotificationContent/NextPriceLiquidatation';
+import useOraclePrices from 'hooks/useOraclePrices';
 const log = debug('maker:CDPDisplay/Presentation');
 const { FF_VAULT_HISTORY } = FeatureFlags;
 
-export default function({ vault, showSidebar, account, network, cdpOwner }) {
+export default function({
+  vault,
+  showSidebar,
+  account,
+  network,
+  cdpOwner,
+  showVaultHistory = true
+}) {
   const { lang } = useLanguage();
   const { maker } = useMaker();
+
+  const { emergencyShutdownActive } = useEmergencyShutdown();
   const { trackBtnClick } = useAnalytics('CollateralView');
   let {
     collateralAmount,
@@ -189,7 +201,7 @@ export default function({ vault, showSidebar, account, network, cdpOwner }) {
             conversion={`${formatter(vault.collateralValue)} USD`}
             button={
               <ActionButton
-                disabled={!account}
+                disabled={!account || emergencyShutdownActive}
                 onClick={() => {
                   trackBtnClick('Deposit');
                   showAction({
@@ -208,7 +220,7 @@ export default function({ vault, showSidebar, account, network, cdpOwner }) {
             conversion={`${formatter(vault.collateralAvailableValue)} USD`}
             button={
               <ActionButton
-                disabled={!account || !isOwner}
+                disabled={!account || !isOwner || emergencyShutdownActive}
                 onClick={() => {
                   trackBtnClick('Withdraw');
                   showAction({
@@ -229,7 +241,7 @@ export default function({ vault, showSidebar, account, network, cdpOwner }) {
             value={formatter(vault.debtValue) + ' TAO'}
             button={
               <ActionButton
-                disabled={!account}
+                disabled={!account || emergencyShutdownActive}
                 onClick={() => {
                   trackBtnClick('Payback');
                   showAction({
@@ -247,7 +259,7 @@ export default function({ vault, showSidebar, account, network, cdpOwner }) {
             value={`${formatter(vault.daiAvailable)} TAO`}
             button={
               <ActionButton
-                disabled={!account || !isOwner}
+                disabled={!account || !isOwner || emergencyShutdownActive}
                 onClick={() => {
                   trackBtnClick('Generate');
                   showAction({

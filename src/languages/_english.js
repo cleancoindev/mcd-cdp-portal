@@ -25,7 +25,7 @@ export default {
     trade_card: {
       title: 'Trade',
       description:
-        "Place orders in the Marketplace, or simply exchange your tokens instantly for what's available.",
+        'Place orders in the decentralised Marketplace, or exchange your tokens quickly.',
       button: 'Start Trading'
     },
     borrow_card: {
@@ -37,52 +37,52 @@ export default {
     save_card: {
       title: 'Save',
       description:
-        'Earn savings on your Tao by locking it into Oasis Save. Automatic and non-custodial.',
+        'Earn savings on your Tao by locking it into Aqua Save. Automatic and non-custodial.',
       button: 'Save Tao'
     },
-    token_section_title: 'Currently supported on Oasis',
-    token_section_only_on_trade: '* Only available on Oasis Trade',
-    section1_title: 'What is Oasis?',
+    token_section_title: 'Supported Tokens',
+    token_section_only_on_trade: '* Only available on Aqua Trade',
+    section1_title: 'What is Aqua?',
     section1_p:
-      'Oasis is a platform for decentralized finance. Use it to trade tokens, borrow Tao, and earn savings — all in one place.',
+      'Aqua is a platform for decentralized finance. Use it to swap tokens, borrow Tao, and earn savings — all in one place.',
     section2_title: 'Secure protocol built on Ethereum',
     section2_p:
-      'Oasis is built on top of audited and formally verified smart contracts created by Maker, the industry leader in secure decentralized finance.',
+      'Aqua is built on top of audited and formally verified smart contracts created by Maker, the industry leader in secure decentralized finance.',
     section3_title: 'Completely permissionless',
     section3_p:
-      'Oasis is a decentralized, non-custodial platform, accessible using an Ethereum-supported wallet. You—and only you—control your assets.',
+      'Aqua is a decentralized, non-custodial platform, accessible using an Ethereum-supported wallet. You—and only you—control your assets.',
     questions_title: 'Questions',
-    question1: 'What is Oasis?',
+    question1: 'What is Aqua?',
     answer1:
-      'Oasis is a decentralized application that runs on the Ethereum blockchain. Anyone can use Oasis to trade tokens, borrow against them, and earn savings using Dai.',
+      'Aqua is a decentralized application that runs on the Ethereum blockchain. Anyone can use Aqua to trade tokens, borrow against them, and earn savings using Tao.',
     question2: 'What is Tao?',
     answer2:
-      'Tao is the world’s first unbiased currency and leading decentralized stablecoin soft-pegged to the US Dollar. Learn more about Dai {0}.',
+      'Tao is the world’s first unbiased currency and leading decentralized stablecoin soft-pegged to the US Dollar. Learn more about Tao {0}.',
     answer2_link1_url: 'https://makerdao.com/en/',
     answer2_link1_text: 'here',
     question3: 'Do I need an account?',
     answer3:
-      'You do not need an account to use Oasis. However, you will need an Ethereum wallet. Oasis supports most Ethereum browser wallets such as {0}, {1}, etc.',
+      'You do not need an account to use Aqua. However, you will need an Ethereum wallet. Aqua supports most Ethereum browser wallets such as {0}, {1}, etc.',
     answer3_link1_url: 'https://metamask.io/',
     answer3_link1_text: 'Metamask',
     answer3_link2_url: 'https://wallet.coinbase.com/',
     answer3_link2_text: 'Coinbase Wallet',
-    question5: 'Is Oasis secure?',
+    question4: 'Is Aqua secure?',
+    answer4:
+      'Security is our top priority. The Aqua team regularly conducts audits on our smart contracts. In addition, the Aqua, forked from DAI Oasis code is {0}, giving the community the ability to pressure test and audit the core technology.',
+    answer4_link1_url: 'https://github.com/takertao/aqua',
+    answer4_link1_text: 'open-source',
+    question5: 'Will I be charged a fee to use Aqua?',
     answer5:
-      'Security is our top priority. The Oasis team regularly conducts audits on our smart contracts. In addition, the Oasis code is {0}, giving the community the ability to pressure test and audit the core technology.',
-    answer5_link1_url: 'https://github.com/OasisDEX',
-    answer5_link1_text: 'open-source',
-    question6: 'Will I be charged a fee to use Oasis?',
-    answer6:
-      'Oasis is free to use. However, you will have to pay gas and other fees associated with the Maker Protocol, such as Stability Fees.',
-    question7: 'How can I contact the Oasis team?',
-    answer7: 'You can reach the Oasis team by contacting us on {0}.',
-    answer7_link1_url: 'https://chat.makerdao.com',
-    answer7_link1_text: 'chat',
-    question8:
-      'Can I buy Bitcoin or Ethereum on Oasis using a credit card or via my bank account?',
-    answer8:
-      'You cannot buy crypto from your bank account using Oasis. Instead, you can use Tao to buy Ethereum and other supported tokens.',
+      'Aqua is free to use. However, you will have to pay gas and other fees associated with the Maker Protocol, such as Stability Fees.',
+    question6: 'How can I contact the Aqua team?',
+    answer6: 'You can reach the Aqua team by contacting us on {0}.',
+    answer6_link1_url: 'https://*discord link TBA*',
+    answer6_link1_text: 'chat',
+    question7:
+      'Can I buy Bitcoin or Ethereum on Aqua using a credit card or via my bank account?',
+    answer7:
+      'You cannot buy crypto from your bank account using Aqua. Instead, you can use Tao to buy Ethereum and other supported tokens.',
     read_only: 'Read-Only',
     wallet_connect: 'Wallet Connect',
     wallet_link: 'Coinbase Wallet'
@@ -96,7 +96,7 @@ export default {
     ratio_mobile: 'Ratio',
     deposited: 'DEPOSITED',
     withdraw: 'AVAIL. TO WITHDRAW',
-    debt: 'Tao',
+    debt: 'TAO',
     view_cdp: 'Manage Vault',
     view_cdp_mobile: 'Manage',
     total_collateral_locked: 'total collateral locked',
@@ -167,7 +167,7 @@ export default {
     setup_proxy_proxy_text:
       'Configure your Vault for easy management. This only has to be done once.',
     setup_proxy_allowance_text:
-      'This permission allows Oasis to interact with your {0}. This has to be done once for each new collateral type.',
+      'This permission allows Aqua to interact with your {0}. This has to be done once for each new collateral type.',
     setup_proxy_proxy_button: 'Setup',
     setup_proxy_allowance_button: 'Set',
     setup_vault: 'Setup Vault',
@@ -209,7 +209,7 @@ export default {
     liquidation_ratio_description:
       'The collateral-to-tao ratio at which the Vault becomes vulnerable to liquidation.',
     liquidation_penalty_description:
-      'The fee that is added to the total outstanding Tao debt when a liquidation occurs.',
+      'This is the additional fee that you will pay on top of your debt when your position is liquidated. There could also be other costs involved depending on the price your collateral is sold',
     waiting_for_comfirmations: 'Waiting for confirmations... {0} of {1}',
     confirmed_with_confirmations: 'Confirmed with {0} confirmations',
     waiting_for_confirmations_info:
@@ -234,7 +234,7 @@ export default {
     fee_in_mkr: 'Fee in MKR',
     migrate: 'Migrate',
     payment: 'Payment',
-    trust_site_with_dai: 'Trust this site with my Tao',
+    trust_site_with_dai: 'Trust this site with my TAO',
     pay_and_migrate: 'Pay and Migrate',
     migrate_in_progress_header: 'Your CDP is being migrated',
     migrate_in_progress_text:
@@ -253,7 +253,7 @@ export default {
       confirmation: 'Confirmation'
     },
     setup_header: 'Deploy Proxy',
-    open_vault: 'Earn savings on your Tao by locking into Oasis Save',
+    open_vault: 'Earn savings on your Tao by locking into Aqua Save',
     deposit_form_title: 'Enter the amount you would like to deposit.',
     setup_proxy_text:
       'Setting up your proxy will bundle multiple transactions into one, saving transaction time and gas costs. This only has to be done once.',
@@ -386,8 +386,8 @@ export default {
     unlocking_token: 'Unlocked {0}',
     setting_up_proxy: 'Set up proxy',
     creating_cdp: 'Created Vault',
-    generate_dai: 'Generated {0} Tao',
-    pay_back_dai: 'Paid back {0} Tao',
+    generate_dai: 'Generated {0} TAO',
+    pay_back_dai: 'Paid back {0} TAO',
     withdrawing_gem: 'Withdrew {0}',
     depositing_gem: 'Deposited {0}',
     claiming_collateral: 'Claimed collateral',
@@ -429,7 +429,7 @@ export default {
   stability_fee: 'Stability Fee',
   liquidation_penalty: 'Liquidation Fee',
   collateral_debt_ceiling: 'Debt ceiling',
-  dai_available: 'Tao Available',
+  dai_available: 'TAO Available',
   returned_auction: 'returned from the auction',
   liquidated_event: 'Your Vault has been liquidated',
   liquidation_ratio: 'Liquidation Ratio',
@@ -448,6 +448,8 @@ export default {
   terms_of_service: 'Terms of Service',
   cookie_notice: 'By using this website you agree to our {0}',
   privacy_policy: 'privacy policy',
+  see_how_it_works: 'See how it works',
+  learn_more: 'Learn more',
   providers: {
     connect_wallet: 'Connect a wallet to get started',
     metamask: 'MetaMask',
@@ -467,10 +469,18 @@ export default {
     claim_collateral:
       'Your {0} Vault auction(s) have completed. You have {1} {2} to claim',
     non_vault_owner:
-      'The owner of this position ({0}) does not match the connected walleted address',
+      'The owner of this position ({0}) does not match the connected wallet address',
     non_overview_owner:
       'You are currently viewing the Overview of another address ({0})',
     non_savings_owner:
-      'You are currently viewing the savings of another address ({0})'
+      'You are currently viewing the savings of another address ({0})',
+    emergency_shutdown_active:
+      'Emergency shutdown has been initiated on {0}. This dashboard is currently read-only. If you have any vaults or DAI, please go to {1}. For more information you can read more {2}',
+    vault_below_next_price:
+      'Your {0} Vault has entered the liquidation phase and your collateral will be auctioned at {1}. You can still avoid auction by depositing at least {2} or repaying {3}',
+    vault_below_current_price:
+      'Your {0} Vault is available for liquidation and your collateral can be auctioned at any time. You can try to avoid the auction by depositing at least {1} or repaying {2}',
+    vault_is_liquidated:
+      'Your Vault was recently liquidated and {0} was made available for Auction. Please check back here for more details.'
   }
 };

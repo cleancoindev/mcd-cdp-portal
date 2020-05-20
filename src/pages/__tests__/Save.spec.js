@@ -10,17 +10,17 @@ import {
   cleanup
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { MTAO, ETH } from '@takertao/tao-plugin-mct';
+import { MDAI, ETH } from '@takertao/dai-plugin-mcd';
 import { createCurrency } from '@makerdao/currency';
 import { TestAccountProvider, mineBlocks } from '@makerdao/test-helpers';
 import Save from '../Save';
 import {
   renderWithAccount,
-  renderWithTaker,
+  renderWithMaker,
   mocks,
   useMakerMock
 } from '../../../test/helpers/render';
-import { instantiateTaker } from '../../taker';
+import { instantiateMaker } from '../../maker';
 import { SidebarProvider } from '../../providers/SidebarProvider';
 import SidebarBase from 'components/SidebarBase';
 import { of } from 'rxjs';
@@ -41,15 +41,15 @@ navi.Link = styled.a``;
 
 const AMOUNT = 80.1234567;
 const ILK = 'ETH-A';
-let taker;
+let maker;
 let web3;
 
 beforeAll(async () => {
-  taker = await instantiateTaker({ network: 'testnet' });
-  web3 = taker.service('web3');
-  await await taker
+  maker = await instantiateMaker({ network: 'testnet' });
+  web3 = maker.service('web3');
+  await await maker
     .service('mcd:cdpManager')
-    .openLockAndDraw(ILK, ETH(1), MTAO(AMOUNT));
+    .openLockAndDraw(ILK, ETH(1), MDAI(AMOUNT));
 });
 
 afterEach(cleanup);
@@ -57,7 +57,7 @@ afterEach(cleanup);
 test('if allowance is 0, show toggle & disable input', async () => {
   const { getAllByText, findByText, getByTestId, getByRole } = renderWithMaker(
     <SidebarProvider>
-      <Save viewedAddress={taker.currentAddress()} />
+      <Save viewedAddress={maker.currentAddress()} />
       <SidebarBase />
     </SidebarProvider>
   );
@@ -80,7 +80,7 @@ test('render save page and perform deposit and withdraw actions', async () => {
     findByText
   } = await renderWithAccount(
     <SidebarProvider>
-      <Save viewedAddress={taker.currentAddress()} />
+      <Save viewedAddress={maker.currentAddress()} />
       <SidebarBase />
     </SidebarProvider>
   );
@@ -147,16 +147,16 @@ test('cannot deposit more than token allowance', async () => {
   const tokenBalanceMock = (address, tokens) => {
     return of(
       tokens.map(token => {
-        if (token === 'MTAO') return MTAO(BigNumber(50));
+        if (token === 'MDAI') return MDAI(BigNumber(50));
         else return createCurrency(token)(0);
       })
     );
   };
   const savingsMock = () =>
     of({
-      taoLockedInDsr: MTAO('5000'),
+      daiLockedInDsr: MDAI('5000'),
       annualDaiSavingsRate: BigNumber(1),
-      savingsTao: MTAO('100'),
+      savingsDai: MDAI('100'),
       savingsRateAccumulator: BigNumber(1)
     });
   const watch = () =>
@@ -165,13 +165,15 @@ test('cannot deposit more than token allowance', async () => {
       tokenBalances: tokenBalanceMock,
       tokenAllowance: () => of(BigNumber('10')),
       proxyAddress: () => of(TEST_ADDRESS_PROXY),
-      taoLockedInDsr: () => of(MTAO('100')),
+      daiLockedInDsr: () => of(MDAI('100')),
       collateralTypesPrices: () => of([]),
-      totalTaoSupply: MOCK_OBS_RESPONSE,
+      totalDaiSupply: MOCK_OBS_RESPONSE,
       vaultsCreated: MOCK_OBS_RESPONSE,
-      totalTaoLockedInDsr: MOCK_OBS_RESPONSE,
+      totalDaiLockedInDsr: MOCK_OBS_RESPONSE,
       annualDaiSavingsRate: MOCK_OBS_RESPONSE,
-      systemCollateralization: MOCK_OBS_RESPONSE
+      systemCollateralization: MOCK_OBS_RESPONSE,
+      emergencyShutdownActive: () => of(false),
+      emergencyShutdownTime: () => of(new Date(0))
     });
 
   const multicall = { watch };
@@ -181,7 +183,7 @@ test('cannot deposit more than token allowance', async () => {
       useMakerMock({ multicall });
       return (
         <SidebarProvider>
-          <Save viewedAddress={taker.currentAddress()} />
+          <Save viewedAddress={maker.currentAddress()} />
           <SidebarBase />
         </SidebarProvider>
       );
@@ -206,10 +208,10 @@ test('display onboarding path if connected address has no proxy', async () => {
   const account = TestAccountProvider.nextAccount();
   const { findByText } = await renderWithMaker(
     React.createElement(() => {
-      const { taker } = useMakerMock();
+      const { maker } = useMakerMock();
       const [flag, setFlag] = React.useState(false);
       React.useEffect(() => {
-        const accountService = taker.service('accounts');
+        const accountService = maker.service('accounts');
         accountService
           .addAccount('noproxy', {
             type: 'privateKey',
@@ -221,7 +223,7 @@ test('display onboarding path if connected address has no proxy', async () => {
           });
       }, []);
 
-      return flag ? <Save viewedAddress={taker.currentAddress()} /> : <div />;
+      return flag ? <Save viewedAddress={maker.currentAddress()} /> : <div />;
     })
   );
 
@@ -229,14 +231,14 @@ test('display onboarding path if connected address has no proxy', async () => {
 });
 
 test('disable deposit/withdraw buttons if not connected wallet', async () => {
-  const defaultAddress = taker.currentAddress();
+  const defaultAddress = maker.currentAddress();
   const account = TestAccountProvider.nextAccount();
   const { getByText } = await renderWithMaker(
     React.createElement(() => {
-      const { taker } = useMakerMock();
+      const { maker } = useMakerMock();
       const [flag, setFlag] = React.useState(false);
       React.useEffect(() => {
-        const accountService = taker.service('accounts');
+        const accountService = maker.service('accounts');
         accountService
           .addAccount('noproxy', {
             type: 'privateKey',

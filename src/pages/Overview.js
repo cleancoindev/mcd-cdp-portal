@@ -146,7 +146,7 @@ function Overview({ viewedAddress }) {
               denom={'USD'}
             />
             <InfoCard
-              title={lang.overview_page.total_tao_debt}
+              title={lang.overview_page.total_dai_debt}
               amount={`${viewedAddressVaults
                 .reduce((acc, { debtValue }) => debtValue.plus(acc), 0)
                 .toBigNumber()

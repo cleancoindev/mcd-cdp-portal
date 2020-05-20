@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react';
-import useTaker from 'hooks/useTaker';
+import useMaker from 'hooks/useMaker';
 import debug from 'debug';
 const log = debug('maker:useDsrEventHistory');
 
 export default function useDsrEventHistory(address) {
-  const { taker, txLastUpdate } = useTaker();
+  const { maker, txLastUpdate } = useMaker();
   const [events, setEvents] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   let isCancelled = false;
   useEffect(() => {
-    if (!taker || !address) return;
+    if (!maker || !address) return;
     async function getHistory() {
       setEvents(null);
       setIsLoading(true);
       log(`Getting DSR event history for address ${address}...`);
-      const events = await taker
+      const events = await maker
         .service('mcd:savings')
         .getEventHistory(address);
       if (isCancelled) return;
@@ -26,7 +26,7 @@ export default function useDsrEventHistory(address) {
     getHistory();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     return () => (isCancelled = true);
-  }, [taker, address, txLastUpdate?.save]);
+  }, [maker, address, txLastUpdate?.save]);
 
   return { events, isLoading };
 }

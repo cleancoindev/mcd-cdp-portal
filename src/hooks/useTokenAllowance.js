@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import useTaker from 'hooks/useTaker';
+import useMaker from 'hooks/useMaker';
 import useActionState from 'hooks/useActionState';
 import { watch } from 'hooks/useObservable';
 import BigNumber from 'bignumber.js';
 
 export default function useTokenAllowance(tokenSymbol) {
-  const { taker, account } = useTaker();
+  const { maker, account } = useMaker();
 
   const proxyAddress = watch.proxyAddress(account?.address);
   const allowance = watch.tokenAllowance(
@@ -25,7 +25,7 @@ export default function useTokenAllowance(tokenSymbol) {
   const [startedWithoutAllowance, setStartedWithoutAllowance] = useState(false);
   const [setAllowance, allowanceLoading, , allowanceErrors] = useActionState(
     async () => {
-      const token = taker.getToken(tokenSymbol);
+      const token = maker.getToken(tokenSymbol);
       const txPromise = token.approveUnlimited(proxyAddress);
       setStartedWithoutAllowance(true);
       return await txPromise;

@@ -138,15 +138,15 @@ const WalletBalances = ({ hasActiveAccount, closeSidebarDrawer }) => {
     () =>
       showWalletTokens.reduceRight((acc, token) => {
         const balanceGtZero = !!(balances[token] && balances[token].gt(0));
-        if (token !== 'ETH' && token !== 'MTAO' && !balanceGtZero) return acc;
+        if (token !== 'ETH' && token !== 'MDAI' && !balanceGtZero) return acc;
         const symbol = formatSymbol(token);
 
-        const tokenIsTaoOrDsr =
-          token === 'MTAO' ||
+        const tokenIsDaiOrDsr =
+          token === 'MDAI' ||
           token === 'TAO' ||
           token === 'SAI' ||
           token === 'DSR';
-        const usdRatio = tokenIsTaoOrDsr
+        const usdRatio = tokenIsDaiOrDsr
           ? new BigNumber(1)
           : token === 'MWETH'
           ? uniqueFeeds['ETH']

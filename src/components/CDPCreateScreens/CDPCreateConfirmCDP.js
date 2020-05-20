@@ -9,8 +9,8 @@ import {
   Button,
   Link
 } from '@makerdao/ui-components-core';
-import { MTAO } from '@takertao/tao-plugin-mct';
-import useTaker from 'hooks/useTaker';
+import { MDAI } from '@takertao/dai-plugin-mcd';
+import useMaker from 'hooks/useMaker';
 import useLanguage from 'hooks/useLanguage';
 import useAnalytics from 'hooks/useAnalytics';
 import { formatter } from 'utils/ui';
@@ -58,7 +58,7 @@ const CDPCreateConfirmSummary = ({
       `${formatter(
         ilkData.calculateCollateralizationRatio(
           BigNumber(cdpParams.gemsToLock),
-          MTAO(cdpParams.daiToDraw)
+          MDAI(cdpParams.daiToDraw)
         )
       )}%`
     ],
@@ -71,7 +71,7 @@ const CDPCreateConfirmSummary = ({
       `$${formatter(
         ilkData.calculateliquidationPrice(
           BigNumber(cdpParams.gemsToLock),
-          MTAO(cdpParams.daiToDraw)
+          MDAI(cdpParams.daiToDraw)
         )
       )}`
     ],
@@ -82,8 +82,8 @@ const CDPCreateConfirmSummary = ({
     [
       lang.stability_fee,
       `${formatter(annualStabilityFee, {
-        integer: true,
-        percentage: true
+        percentage: true,
+        rounding: BigNumber.ROUND_HALF_UP
       })}%`
     ]
   ];
@@ -154,7 +154,19 @@ const CDPCreateConfirmSummary = ({
       <ScreenFooter
         canProgress={hasReadTOS && hasUnderstoodSF && enableSubmit}
         onNext={() => {
-          trackBtnClick('Next', { isFirstVault });
+          trackBtnClick('Next', {
+            isFirstVault,
+            fathom: [
+              {
+                id: `open${selectedIlk.gem}VaultDraw`,
+                amount: cdpParams.daiToDraw
+              },
+              {
+                id: `open${selectedIlk.gem}VaultLock`,
+                amount: cdpParams.gemsToLock
+              }
+            ]
+          });
           capturedDispatch({ type: 'increment-step' });
         }}
         onBack={() => {
@@ -170,15 +182,15 @@ const CDPCreateConfirmSummary = ({
 const CDPCreateConfirmed = ({ hash, isFirstVault, onClose, txState }) => {
   const { trackBtnClick } = useAnalytics('ConfirmVault', 'VaultCreate');
   const { lang } = useLanguage();
-  const { taker } = useTaker();
+  const { maker } = useMaker();
   const [waitTime, setWaitTime] = useState('8 minutes');
 
-  const networkId = taker.service('web3').networkId();
+  const networkId = maker.service('web3').networkId();
   const isTestchain = ![1, 42].includes(networkId);
   useEffect(() => {
     (async () => {
       // this is the default transaction speed
-      const waitTime = await taker.service('gas').getWaitTime('fast');
+      const waitTime = await maker.service('gas').getWaitTime('fast');
       const minutes = Math.round(waitTime);
       const seconds = Math.round(waitTime * 6) * 10;
 
@@ -262,7 +274,7 @@ const CDPCreateConfirmCDP = ({
   collateralTypesData,
   onClose
 }) => {
-  const { taker } = useTaker();
+  const { maker } = useMaker();
   const [enableSubmit, setEnableSubmit] = useState(true);
 
   const { gemsToLock, daiToDraw, txState } = cdpParams;
@@ -273,7 +285,7 @@ const CDPCreateConfirmCDP = ({
     const { type } = payload;
     if (type !== 'increment-step') return dispatch(payload);
 
-    const txObject = taker
+    const txObject = maker
       .service('mcd:cdpManager')
       .openLockAndDraw(
         selectedIlk.symbol,
@@ -283,7 +295,7 @@ const CDPCreateConfirmCDP = ({
 
     setEnableSubmit(false);
 
-    const txMgr = taker.service('transactionManager');
+    const txMgr = maker.service('transactionManager');
     txMgr.listen(txObject, {
       pending: tx => setOpenCDPTxHash(tx.hash),
       confirmed: () => {

@@ -1,23 +1,24 @@
 import { useEffect, useState } from 'react';
-import useTaker from 'hooks/useTaker';
+import useMaker from 'hooks/useMaker';
 import debug from 'debug';
-const log = debug('taker:useEventHistory');
+const log = debug('maker:useEventHistory');
 
 export default function useEventHistory(id) {
-  const { taker, txLastUpdate } = useTaker();
+  const { maker, txLastUpdate } = useMaker();
   const [events, setEvents] = useState(null);
-
   let isCancelled = false;
   useEffect(() => {
-    if (!taker) return;
+    if (!maker) return;
     async function getHistory() {
       setEvents(null);
       log(`Getting event history for vault #${id}...`);
-      const cdp = await taker
+      const cdp = await maker
         .service('mcd:cdpManager')
         .getCdp(id, { prefetch: false });
       if (isCancelled) return;
-      const events = await taker.service('mcd:cdpManager').getEventHistory(cdp);
+      const nextEvents = await maker
+        .service('mcd:cdpManager')
+        .getEventHistory(cdp);
       if (isCancelled) return;
       log('Got events for #' + id, events);
       setEvents(events);
@@ -25,7 +26,6 @@ export default function useEventHistory(id) {
     getHistory();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     return () => (isCancelled = true);
-  }, [taker, id, txLastUpdate?.[id]]);
-
+  }, [maker, id, txLastUpdate?.[id]]);
   return events;
 }

@@ -2,14 +2,14 @@ import React, { useState, useCallback } from 'react';
 import { Text, Input, Grid, Button } from '@makerdao/ui-components-core';
 import Info from './shared/Info';
 import InfoContainer from './shared/InfoContainer';
-import useTaker from 'hooks/useTaker';
+import useMaker from 'hooks/useMaker';
 import useTokenAllowance from 'hooks/useTokenAllowance';
 import useWalletBalances from 'hooks/useWalletBalances';
 import useValidatedInput from 'hooks/useValidatedInput';
 import useLanguage from 'hooks/useLanguage';
 import useAnalytics from 'hooks/useAnalytics';
 import ProxyAllowanceToggle from 'components/ProxyAllowanceToggle';
-import { MTAO } from '@takertao/tao-plugin-mct';
+import { MDAI } from '@takertao/dai-plugin-mcd';
 import SetMax from 'components/SetMax';
 import { BigNumber } from 'bignumber.js';
 import { safeToFixed } from '../../utils/ui';
@@ -17,13 +17,13 @@ import { safeToFixed } from '../../utils/ui';
 const DsrWithdraw = ({ savings, reset }) => {
   const { trackBtnClick } = useAnalytics('Withdraw', 'Sidebar');
   const { lang } = useLanguage();
-  const { taker } = useTaker();
+  const { maker } = useMaker();
 
-  const { symbol } = MTAO;
+  const { symbol } = MDAI;
   const displaySymbol = 'TAO';
 
   const { daiLockedInDsr } = savings;
-  const { MTAO: daiBalance } = useWalletBalances();
+  const { MDAI: daiBalance } = useWalletBalances();
   const { hasAllowance, hasSufficientAllowance } = useTokenAllowance(symbol);
   const [withdrawMaxFlag, setWithdrawMaxFlag] = useState(false);
 
@@ -66,7 +66,7 @@ const DsrWithdraw = ({ savings, reset }) => {
     if (withdrawMaxFlag || new BigNumber(withdrawAmount).eq(daiLockedInDsr)) {
       maker.service('mcd:savings').exitAll();
     } else {
-      maker.service('mcd:savings').exit(MTAO(withdrawAmount));
+      maker.service('mcd:savings').exit(MDAI(withdrawAmount));
     }
     reset();
   };
@@ -111,7 +111,7 @@ const DsrWithdraw = ({ savings, reset }) => {
         />
       </Grid>
       <ProxyAllowanceToggle
-        token="MTAO"
+        token="MDAI"
         onlyShowAllowance={true}
         trackBtnClick={trackBtnClick}
       />
@@ -119,7 +119,10 @@ const DsrWithdraw = ({ savings, reset }) => {
         <Button
           disabled={!valid}
           onClick={() => {
-            trackBtnClick('Confirm', { amount: withdrawAmount });
+            trackBtnClick('Confirm', {
+              amount: withdrawAmount,
+              fathom: { id: 'saveWithdraw', amount: withdrawAmount }
+            });
             withdraw();
           }}
           data-testid={'withdraw-button'}

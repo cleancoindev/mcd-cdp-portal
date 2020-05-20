@@ -1,12 +1,12 @@
 import React from 'react';
 import BigNumber from 'bignumber.js';
-import { MTAO } from '@takertao/tao-plugin-mct';
+import { MDAI } from '@takertao/dai-plugin-mcd';
 import { Text, Input, Grid, Button } from '@makerdao/ui-components-core';
 import Info from './shared/Info';
 import InfoContainer from './shared/InfoContainer';
 import SetMax from 'components/SetMax';
 import RatioDisplay, { RatioDisplayTypes } from 'components/RatioDisplay';
-import useTaker from 'hooks/useTaker';
+import useMaker from 'hooks/useMaker';
 import useLanguage from 'hooks/useLanguage';
 import useAnalytics from 'hooks/useAnalytics';
 import useValidatedInput from 'hooks/useValidatedInput';
@@ -19,7 +19,7 @@ const { long } = decimalRules;
 const Withdraw = ({ vault, reset }) => {
   const { trackBtnClick } = useAnalytics('Withdraw', 'Sidebar');
   const { lang } = useLanguage();
-  const { taker } = useTaker();
+  const { maker } = useMaker();
 
   let {
     vaultType,
@@ -124,7 +124,10 @@ const Withdraw = ({ vault, reset }) => {
         <Button
           disabled={!amount || amountErrors}
           onClick={() => {
-            trackBtnClick('Confirm', { amount });
+            trackBtnClick('Confirm', {
+              amount,
+              fathom: { id: `${symbol}VaultWithdraw`, amount }
+            });
             withdraw();
           }}
         >

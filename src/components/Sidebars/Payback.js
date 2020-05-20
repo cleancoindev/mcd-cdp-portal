@@ -1,11 +1,11 @@
 import React from 'react';
-import { MTAO } from '@takertao/tao-plugin-mct';
+import { MDAI } from '@takertao/dai-plugin-mcd';
 import { Text, Input, Grid, Button } from '@makerdao/ui-components-core';
 import debug from 'debug';
 
 import { formatCollateralizationRatio } from 'utils/ui';
 
-import useTaker from 'hooks/useTaker';
+import useMaker from 'hooks/useMaker';
 import useProxy from 'hooks/useProxy';
 import useTokenAllowance from 'hooks/useTokenAllowance';
 import useWalletBalances from 'hooks/useWalletBalances';
@@ -28,11 +28,11 @@ const log = debug('maker:Sidebars/Payback');
 const Payback = ({ vault, reset }) => {
   const { trackBtnClick } = useAnalytics('Payback', 'Sidebar');
   const { lang } = useLanguage();
-  const { taker } = useTaker();
+  const { maker } = useMaker();
   const balances = useWalletBalances();
-  const daiBalance = balances.MTAO;
+  const daiBalance = balances.MDAI;
 
-  const { hasAllowance, hasSufficientAllowance } = useTokenAllowance('MTAO');
+  const { hasAllowance, hasSufficientAllowance } = useTokenAllowance('MDAI');
   const { hasProxy } = useProxy();
 
   let { debtValue, debtFloor, collateralAmount } = vault;
@@ -101,12 +101,12 @@ const Payback = ({ vault, reset }) => {
   const liquidationPrice = undercollateralized
     ? BigNumber(0)
     : vault.calculateLiquidationPrice({
-        debtValue: MTAO(debtValue.minus(amountToPayback))
+        debtValue: MDAI(debtValue.minus(amountToPayback))
       });
   const collateralizationRatio = undercollateralized
     ? Infinity
     : vault.calculateCollateralizationRatio({
-        debtValue: MTAO(debtValue.minus(amountToPayback))
+        debtValue: MDAI(debtValue.minus(amountToPayback))
       });
   return (
     <Grid gridRowGap="m">
@@ -136,12 +136,15 @@ const Payback = ({ vault, reset }) => {
           }
         />
       </Grid>
-      <ProxyAllowanceToggle token="MTAO" trackBtnClick={trackBtnClick} />
+      <ProxyAllowanceToggle token="MDAI" trackBtnClick={trackBtnClick} />
       <Grid gridTemplateColumns="1fr 1fr" gridColumnGap="s">
         <Button
           disabled={!valid}
           onClick={() => {
-            trackBtnClick('Confirm', { amount });
+            trackBtnClick('Confirm', {
+              amount,
+              fathom: { id: `${symbol}VaultPayback`, amount }
+            });
             payback();
           }}
         >

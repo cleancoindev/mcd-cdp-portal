@@ -10,17 +10,17 @@ import { renderWithMaker as render } from '../../../../test/helpers/render';
 import Send from '../Send';
 import lang from 'languages';
 import testAccounts from '../../../../node_modules/@makerdao/test-helpers/dist/testAccounts.json';
-import useTaker from '../../../hooks/useTaker';
+import useMaker from '../../../hooks/useMaker';
 import waitForExpect from 'wait-for-expect';
 
 afterEach(cleanup);
 
 test('should send 1 BAT successfully', async () => {
-  let taker;
+  let maker;
   const { getByTestId, getAllByTestId } = render(
     React.createElement(() => {
-      const { taker: taker_ } = useTaker();
-      taker = taker_;
+      const { maker: maker_ } = useMaker();
+      maker = maker_;
       return <Send token="BAT" reset={() => null} />;
     })
   );
@@ -53,8 +53,8 @@ test('should send 1 BAT successfully', async () => {
   });
 
   await waitForExpect(async () => {
-    const afterBal1 = await taker.latest('tokenBalance', addr1, 'BAT');
-    const afterBal2 = await taker.latest('tokenBalance', addr2, 'BAT');
+    const afterBal1 = await maker.latest('tokenBalance', addr1, 'BAT');
+    const afterBal2 = await maker.latest('tokenBalance', addr2, 'BAT');
     expect(
       afterBal1
         .toBigNumber()
@@ -81,7 +81,7 @@ test('basic rendering when sending ETH', async () => {
 });
 
 test('basic rendering when sending TAO', async () => {
-  const token = 'MTAO';
+  const token = 'MDAI';
   let getByText;
   act(() => {
     const { getByText: _getByText } = render(<Send token={token} />);

@@ -9,17 +9,17 @@ import useValidatedInput from 'hooks/useValidatedInput';
 import useLanguage from 'hooks/useLanguage';
 import useAnalytics from 'hooks/useAnalytics';
 import ProxyAllowanceToggle from 'components/ProxyAllowanceToggle';
-import { MTAO } from '@takertao/tap-plugin-mct';
+import { MDAI } from '@takertao/dai-plugin-mcd';
 import SetMax from 'components/SetMax';
 import { safeToFixed } from '../../utils/ui';
 
 const DsrDeposit = ({ savings, reset }) => {
   const { trackBtnClick } = useAnalytics('Deposit', 'Sidebar');
   const { lang } = useLanguage();
-  const { taker } = useTaker();
+  const { maker } = useMaker();
 
-  const { symbol } = MTAO;
-  const displaySymbol = 'TAO';
+  const { symbol } = MDAI;
+  const displaySymbol = 'DAI';
 
   const { daiLockedInDsr } = savings;
   const { MDAI: daiBalance } = useWalletBalances();
@@ -101,7 +101,7 @@ const DsrDeposit = ({ savings, reset }) => {
         />
       </Grid>
       <ProxyAllowanceToggle
-        token="MTAO"
+        token="MDAI"
         onlyShowAllowance={true}
         trackBtnClick={trackBtnClick}
       />
@@ -109,7 +109,10 @@ const DsrDeposit = ({ savings, reset }) => {
         <Button
           disabled={!valid}
           onClick={() => {
-            trackBtnClick('Confirm', { amount: depositAmount });
+            trackBtnClick('Confirm', {
+              amount: depositAmount,
+              fathom: { id: 'saveDeposit', amount: depositAmount }
+            });
             deposit();
           }}
           data-testid={'deposit-button'}

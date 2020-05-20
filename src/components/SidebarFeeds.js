@@ -5,6 +5,7 @@ import Carat from './Carat';
 import styled from 'styled-components';
 import { ReactComponent as ExternalLinkIcon } from 'images/external-link.svg';
 import useLanguage from 'hooks/useLanguage';
+import BigNumber from 'bignumber.js';
 
 const StyledCardBody = styled(CardBody)`
   cursor: pointer;
@@ -31,7 +32,7 @@ const SidebarFeeds = ({ feeds }) => {
         {feeds &&
           feeds.map(
             (value, index) =>
-              (!collapsed || index < 3) && (
+              (!collapsed || index < 4) && (
                 <Flex
                   key={`feed_${index}`}
                   justifyContent="space-between"
@@ -52,13 +53,15 @@ const SidebarFeeds = ({ feeds }) => {
                       .join('/')}
                   </Text>
                   <Text fontSize="1.4rem" color="darkPurple">
-                    {prettifyNumber(value)}
+                    {`${formatter(value, {
+                      rounding: BigNumber.ROUND_HALF_UP
+                    })} ${value.symbol}`}
                   </Text>
                 </Flex>
               )
           )}
       </CardBody>
-      {feeds && feeds.length > 3 && (
+      {feeds && feeds.length > 4 && (
         <StyledCardBody p="s" onClick={() => setCollapsed(!collapsed)}>
           <Flex justifyContent="center" alignItems="center">
             {collapsed ? (

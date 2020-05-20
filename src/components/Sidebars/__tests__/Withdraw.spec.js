@@ -6,15 +6,15 @@ import {
   act
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { BAT, USD, MTAO } from '@takertao/tao-plugin-mct';
+import { BAT, USD, MDAI } from '@takertao/dai-plugin-mcd';
 import { fromWei } from '@makerdao/dai-plugin-mcd/dist/utils';
-import { createCurrencyRatio } from '@makerdao/currency';
-import * as math from '@makerdao/dai-plugin-mcd/dist/math';
+import { createCurrencyRatio } from '@takertao/currency';
+import * as math from '@takertao/dai-plugin-mcd/dist/math';
 
 import Withdraw from '../Withdraw';
 import { renderWithMaker } from '../../../../test/helpers/render';
 import lang from '../../../languages';
-import useTaker from '../../../hooks/useTaker';
+import useMaker from '../../../hooks/useMaker';
 
 const ILK = 'BAT-A';
 const INITIAL_BAT = '300.123456789012345678';
@@ -40,16 +40,16 @@ afterAll(() => {
 
 afterEach(cleanup);
 
-const liquidationRatio = createCurrencyRatio(USD, MTAO)(LIQUIDATION_RATIO);
+const liquidationRatio = createCurrencyRatio(USD, MDAI)(LIQUIDATION_RATIO);
 const collateralValue = USD(12004.938271560493);
-const debtValue = MTAO(0);
+const debtValue = MDAI(0);
 
 const mockVault = {
   id: 1,
   collateralType: ILK,
   debtValue,
   encumberedDebt: fromWei(0),
-  daiAvailable: MTAO(36.014814),
+  daiAvailable: MDAI(36.014814),
   vaultType: ILK,
   collateralAmount: BAT(0), // used to retrieve gem symbol
   encumberedCollateral: fromWei(1000000000000000000),

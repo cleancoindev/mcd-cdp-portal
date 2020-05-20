@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import assert from 'assert';
 import { wait, fireEvent, waitForElement } from '@testing-library/react';
-import { MTAO, ETH } from '@takertao/tao-plugin-mct';
+import { MDAI, ETH } from '@takertao/dai-plugin-mcd';
 import { mineBlocks, TestAccountProvider } from '@makerdao/test-helpers';
 
 import DSRDeposit from '../DSRDeposit';
@@ -9,34 +9,34 @@ import lang from '../../languages';
 import { renderWithAccount } from '../../../test/helpers/render';
 import { instantiateMaker } from '../../maker';
 import { prettifyNumber } from '../../utils/ui';
-import useTaker from 'hooks/useTaker';
+import useMaker from 'hooks/useMaker';
 
 const { click, change } = fireEvent;
 
 const AMOUNT = 80.1234567;
 const ILK = 'ETH-A';
-let taker;
+let maker;
 let web3;
 let noProxyAcct;
 
 beforeAll(async () => {
   // Generate Dai & send to an account with no proxy
-  taker = await instantiateTaker({ network: 'testnet' });
-  await await taker
+  maker = await instantiateMaker({ network: 'testnet' });
+  await await maker
     .service('mcd:cdpManager')
-    .openLockAndDraw(ILK, ETH(1), MTAO(AMOUNT));
+    .openLockAndDraw(ILK, ETH(1), MDAI(AMOUNT));
 
   TestAccountProvider.setIndex(345);
   noProxyAcct = TestAccountProvider.nextAccount();
-  const token = taker.getToken(MTAO.symbol);
+  const token = maker.getToken(MDAI.symbol);
   await token.transfer(noProxyAcct.address, AMOUNT);
 });
 
 const RenderNoProxyAccount = () => {
   const hideOnboarding = jest.fn();
   const [changedAccount, setAccountChanged] = useState(false);
-  const { taker } = useTaker();
-  web3 = taker.service('web3');
+  const { maker } = useMaker();
+  web3 = maker.service('web3');
 
   const changeAccount = async () => {
     const accountService = taker.service('accounts');

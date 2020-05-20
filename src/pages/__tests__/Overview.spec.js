@@ -2,10 +2,10 @@ import React from 'react';
 import * as navi from 'react-navi';
 import { waitForElement, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { MTAO, ETH } from '@takerdao/tao-plugin-mct';
+import { MDAI, ETH } from '@takertao/dai-plugin-mcd';
 import Overview from '../Overview';
 import { renderWithVaults } from '../../../test/helpers/render';
-import { instantiateTaker } from '../../taker';
+import { instantiateMaker } from '../../maker';
 import styled from 'styled-components';
 
 jest.mock('react-navi');
@@ -21,17 +21,17 @@ const VAULT2_ETH = '1';
 const VAULT2_ART = '25';
 const VIEWED_ADDRESS = '0x16fb96a5fa0427af0c8f7cf1eb4870231c8154b6';
 
-let taker;
+let maker;
 
 beforeAll(async () => {
-  taker = await instantiateTaker({ network: 'testnet' });
-  await taker
+  maker = await instantiateMaker({ network: 'testnet' });
+  await maker
     .service('mcd:cdpManager')
-    .openLockAndDraw(ILK, ETH(VAULT1_ETH), MTAO(VAULT1_ART));
+    .openLockAndDraw(ILK, ETH(VAULT1_ETH), MDAI(VAULT1_ART));
 
-  await taker
+  await maker
     .service('mcd:cdpManager')
-    .openLockAndDraw(ILK, ETH(VAULT2_ETH), MTAO(VAULT2_ART));
+    .openLockAndDraw(ILK, ETH(VAULT2_ETH), MDAI(VAULT2_ART));
 });
 
 afterEach(cleanup);

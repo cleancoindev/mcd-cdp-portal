@@ -90,7 +90,7 @@ export function firstLetterLowercase(str) {
 }
 
 export function cleanSymbol(s) {
-  if (s === 'MTAO') return 'TAO';
+  if (s === 'MDAI') return 'TAO';
   if (s === 'DSR-DAI') return 'TAO';
   return s;
 }
@@ -196,7 +196,7 @@ export function formatter(target, options = {}) {
 }
 
 export const formatSymbol = token => {
-  return token === 'MTAO'
+  return token === 'MDAI'
     ? 'TAO'
     : token === 'TAO'
     ? 'SAI'

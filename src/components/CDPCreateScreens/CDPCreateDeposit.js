@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Grid, Text, Input, Card } from '@makerdao/ui-components-core';
-import { MTAO } from '@takertao/tao-plugin-mct';
+import { MDAI } from '@takertao/dai-plugin-mcd';
 import { greaterThanOrEqual } from 'utils/bignumber';
 import { TextBlock } from 'components/Typography';
 import {
@@ -25,7 +25,7 @@ function OpenCDPForm({
   ilkData
 }) {
   const { lang } = useLanguage();
-  const { calculateMaxTao, liquidationRatio, debtFloor } = ilkData;
+  const { calculateMaxDai, liquidationRatio, debtFloor } = ilkData;
 
   const daiAvailable = calculateMaxDai(BigNumber(cdpParams.gemsToLock || '0'));
   const belowDustLimit = debtFloor?.gt(BigNumber(cdpParams.daiToDraw));
@@ -89,7 +89,10 @@ function OpenCDPForm({
             });
           }}
         >
-          {prettifyNumber(selectedIlk.userGemBalance)} {selectedIlk.gem}
+          {selectedIlk.gem === 'USDC'
+            ? prettifyNumber(selectedIlk.userGemBalance, { truncate: true })
+            : prettifyNumber(selectedIlk.userGemBalance)}{' '}
+          {selectedIlk.gem}
         </Text>
       </Box>
     ],
@@ -185,7 +188,7 @@ const CDPCreateDepositSidebar = ({
   let liquidationPriceDisplay = formatter(
     ilkData.calculateliquidationPrice(
       currency(cdpParams.gemsToLock || '0'),
-      MTAO(cdpParams.daiToDraw || '0')
+      MDAI(cdpParams.daiToDraw || '0')
     )
   );
   if ([Infinity, 'Infinity'].includes(liquidationPriceDisplay))
@@ -218,8 +221,8 @@ const CDPCreateDepositSidebar = ({
         [
           lang.stability_fee,
           `${formatter(annualStabilityFee, {
-            integer: true,
-            percentage: true
+            percentage: true,
+            rounding: BigNumber.ROUND_HALF_UP
           })}%`
         ]
       ].map(([title, value]) => (
@@ -256,7 +259,7 @@ const CDPCreateDeposit = ({
 
   const collateralizationRatio = ilkData.calculateCollateralizationRatio(
     BigNumber(cdpParams.gemsToLock || '0'),
-    MTAO(cdpParams.daiToDraw || '0')
+    MDAI(cdpParams.daiToDraw || '0')
   );
 
   function handleInputChange({ target }) {

@@ -25,7 +25,7 @@ const DSRDepositCheckProxy = ({ dispatch, onClose }) => {
     hasAllowance,
     setAllowance,
     allowanceLoading: isSettingAllowance
-  } = useTokenAllowance('MTAO');
+  } = useTokenAllowance('MDAI');
 
   const labels = {
     setup_text: lang.dsr_deposit.setup_proxy_text,

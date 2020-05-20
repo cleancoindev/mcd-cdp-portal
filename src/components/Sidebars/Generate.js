@@ -1,11 +1,11 @@
 import React from 'react';
 import BigNumber from 'bignumber.js';
-import { MTAO } from '@takertao/tao-plugin-mct';
+import { MDAI } from '@takertao/dai-plugin-mcd';
 import { Text, Input, Grid, Button } from '@makerdao/ui-components-core';
 import Info from './shared/Info';
 import InfoContainer from './shared/InfoContainer';
 import RatioDisplay, { RatioDisplayTypes } from 'components/RatioDisplay';
-import useTaker from 'hooks/useTaker';
+import useMaker from 'hooks/useMaker';
 import useLanguage from 'hooks/useLanguage';
 import useAnalytics from 'hooks/useAnalytics';
 import useValidatedInput from 'hooks/useValidatedInput';
@@ -17,7 +17,7 @@ const { long, medium } = decimalRules;
 const Generate = ({ vault, reset }) => {
   const { trackBtnClick } = useAnalytics('Generate', 'Sidebar');
   const { lang } = useLanguage();
-  const { taker } = useTaker();
+  const { maker } = useMaker();
 
   let {
     debtValue,
@@ -56,10 +56,10 @@ const Generate = ({ vault, reset }) => {
   );
 
   const amountToGenerate = amount || 0;
-  const undercollateralized = daiAvailable.lt(amount);
+  const undercollateralized = daiAvailable.lt(amountToGenerate);
 
   const generate = () => {
-    maker.service('mcd:cdpManager').draw(vault.id, vaultType, MTAO(amount));
+    maker.service('mcd:cdpManager').draw(vault.id, vaultType, MDAI(amount));
     reset();
   };
 
@@ -100,7 +100,10 @@ const Generate = ({ vault, reset }) => {
         <Button
           disabled={!amount || failureMessage}
           onClick={() => {
-            trackBtnClick('Confirm', { amount });
+            trackBtnClick('Confirm', {
+              amount,
+              fathom: { id: `${symbol}VaultGenerate`, amount }
+            });
             generate();
           }}
         >

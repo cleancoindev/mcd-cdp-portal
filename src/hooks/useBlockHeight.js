@@ -1,19 +1,19 @@
 import { useState, useEffect } from 'react';
-import useTaker from 'hooks/useTaker';
+import useMaker from 'hooks/useMaker';
 
 export const useWeb3BlockHeight = (initialState = null) => {
-  const { taker } = useTaker();
+  const { maker } = useMaker();
   const [blockHeight, setBlockHeight] = useState(initialState);
-  if (!taker) return;
-  if (!taker.service('web3')) return;
+  if (!maker) return;
+  if (!maker.service('web3')) return;
 
-  taker.service('web3').onNewBlock(setBlockHeight);
+  maker.service('web3').onNewBlock(setBlockHeight);
 
   return blockHeight;
 };
 
 const useBlockHeight = (initialState = null) => {
-  const { watcher } = useTaker();
+  const { watcher } = useMaker();
   const [blockHeight, setBlockHeight] = useState(initialState);
 
   useEffect(() => {

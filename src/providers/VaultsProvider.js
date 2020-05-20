@@ -1,7 +1,7 @@
 import React, { createContext } from 'react';
 import { useEffect } from 'react';
 import { watch } from 'hooks/useObservable';
-import useTaker from 'hooks/useTaker';
+import useMaker from 'hooks/useMaker';
 import usePrevious from 'hooks/usePrevious';
 import { Routes } from 'utils/constants';
 import useCdpTypes from 'hooks/useCdpTypes';
@@ -9,7 +9,7 @@ import useCdpTypes from 'hooks/useCdpTypes';
 export const VaultsContext = createContext({});
 
 function VaultsProvider({ children, viewedAddress }) {
-  const { account, navigation, network } = useTaker();
+  const { account, navigation, network } = useMaker();
   const { cdpTypesList } = useCdpTypes();
 
   const userProxy = watch.proxyAddress(account?.address);

@@ -4,7 +4,7 @@ import { renderWithAccount } from '../../../test/helpers/render';
 import { wait, fireEvent } from '@testing-library/react';
 import { mineBlocks, TestAccountProvider } from '@makerdao/test-helpers';
 import assert from 'assert';
-import useTaker from 'hooks/useTaker';
+import useMaker from 'hooks/useMaker';
 const { click, change } = fireEvent;
 
 jest.mock('mixpanel-browser', () => ({
@@ -20,11 +20,11 @@ let web3;
 
 const RenderNoProxyAccount = () => {
   const [changedAccount, setAccountChanged] = useState(false);
-  const { taker } = useTaker();
-  web3 = taker.service('web3');
+  const { maker } = useMaker();
+  web3 = maker.service('web3');
 
   const changeAccount = async () => {
-    const accountService = taker.service('accounts');
+    const accountService = maker.service('accounts');
     TestAccountProvider.setIndex(345);
     const { key } = TestAccountProvider.nextAccount();
     await accountService.addAccount('noproxy', { type: 'privateKey', key });

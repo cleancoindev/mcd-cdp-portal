@@ -44,6 +44,24 @@ export default [
     gem: 'BAT',
     currency: BAT,
     networks: ['kovan', 'mainnet', 'testnet', 'rinkeby', 'ropsten', 'goerli']
+  },
+  {
+    slug: 'usdc-a',
+    symbol: 'USDC-A',
+    key: 'USDC-A',
+    gem: 'USDC',
+    currency: USDC,
+    networks: ['kovan', 'mainnet', 'testnet', 'rinkeby', 'ropsten', 'goerli'],
+    decimals: 6
+  },
+  {
+    slug: 'wbtc-a',
+    symbol: 'WBTC-A',
+    key: 'WBTC-A',
+    gem: 'WBTC',
+    currency: WBTC,
+    networks: ['kovan', 'mainnet'],
+    decimals: 8
   }
   // {
   //   slug: 'dgd-a',

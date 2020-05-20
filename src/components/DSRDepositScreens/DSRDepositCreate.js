@@ -11,7 +11,7 @@ import useValidatedInput from '../../hooks/useValidatedInput';
 import SetMax from '../SetMax';
 import useTokenAllowance from 'hooks/useTokenAllowance';
 
-function DepositTaoForm({
+function DepositDaiForm({
   depositAmount,
   daiBalance,
   onDepositAmountChange,
@@ -24,7 +24,7 @@ function DepositTaoForm({
     [
       lang.formatString(lang.dsr_deposit.deposit_form_title, 'TAO'),
       <Input
-        key="taoinput"
+        key="daiinput"
         name="gemsToLock"
         after={<SetMax onClick={setDepositMax} />}
         type="number"
@@ -73,9 +73,9 @@ function DepositTaoForm({
 const DSRDepositCreate = ({ dispatch, onClose }) => {
   const { lang } = useLanguage();
   const balances = useWalletBalances();
-  const { MTAO } = balances;
-  const daiBalance = MTAO.toFixed(6);
-  const { hasSufficientAllowance } = useTokenAllowance('MTAO');
+  const { MDAI } = balances;
+  const daiBalance = MDAI.toFixed(6);
+  const { hasSufficientAllowance } = useTokenAllowance('MDAI');
 
   const [
     depositAmount,
@@ -87,7 +87,7 @@ const DSRDepositCreate = ({ dispatch, onClose }) => {
     {
       isFloat: true,
       minFloat: 0.0,
-      maxFloat: MTAO && MTAO.toNumber(),
+      maxFloat: MDAI && MDAI.toNumber(),
       custom: {
         allowanceInvalid: value => !hasSufficientAllowance(value)
       }
@@ -101,12 +101,12 @@ const DSRDepositCreate = ({ dispatch, onClose }) => {
   );
 
   const setDepositMax = useCallback(() => {
-    if (MTAO) {
-      setDepositAmount(MTAO.toNumber().toString());
+    if (MDAI) {
+      setDepositAmount(MDAI.toNumber().toString());
     } else {
       setDepositAmount('0');
     }
-  }, [MTAO, setDepositAmount]);
+  }, [MDAI, setDepositAmount]);
   return (
     <Box
       maxWidth="1040px"
@@ -120,7 +120,7 @@ const DSRDepositCreate = ({ dispatch, onClose }) => {
       />
       <Grid gridGap="m" my="l">
         <Card px={{ s: 'm', m: 'xl' }} py={{ s: 'm', m: 'l' }}>
-          <DepositTaoForm
+          <DepositDaiForm
             daiBalance={daiBalance}
             setDepositMax={setDepositMax}
             depositAmount={depositAmount}

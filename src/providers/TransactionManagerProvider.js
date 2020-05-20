@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
 import { useEffect } from 'react';
-import useTaker from 'hooks/useTaker';
+import useMaker from 'hooks/useMaker';
 import { prettifyCurrency, formatSymbol } from 'utils/ui';
 import useLanguage from 'hooks/useLanguage';
 import { uniqueId } from 'utils/dev';
@@ -36,7 +36,7 @@ const formatTxMessage = (lang, { metadata, ...tx }, state) => {
     case 'safeWipeAll':
       return lang.formatString(
         `${lang[langKey].pay_back_dai}${suffix}`,
-        <>outstanding</>
+        'outstanding'
       );
     case 'draw':
       return lang.formatString(
@@ -87,20 +87,20 @@ const formatTxMessage = (lang, { metadata, ...tx }, state) => {
     case 'approve':
       return lang.formatString(
         `${lang[langKey].unlocking_token}${suffix}`,
-        metadata.contract === 'MCD_DAI' ? 'DAI' : 'token'
+        metadata.contract === 'MCD_DAI' ? 'TAO' : 'token'
       );
     case 'join':
       if (metadata.contract === 'PROXY_ACTIONS_DSR')
         return lang.formatString(
           `${lang[langKey].depositing_gem}${suffix}`,
-          'DAI'
+          'TAO'
         );
       else return '?';
     case 'exit':
       if (metadata.contract === 'PROXY_ACTIONS_DSR')
         return lang.formatString(
           `${lang[langKey].withdrawing_gem}${suffix}`,
-          'DAI'
+          'TAO'
         );
       else return '?';
     case 'frob':
@@ -115,15 +115,15 @@ const formatTxMessage = (lang, { metadata, ...tx }, state) => {
 export const TransactionManagerContext = createContext({});
 
 function TransactionManagerProvider({ children }) {
-  const { taker } = useTaker();
+  const { maker } = useMaker();
   const { lang } = useLanguage();
   const [transactions, setTransactions] = useState([]);
   const [txDrawExpanded, setTxDrawExpanded] = useState(true);
 
   useEffect(() => {
-    if (!taker) return;
+    if (!maker) return;
 
-    const sub = taker
+    const sub = maker
       .service('transactionManager')
       .onTransactionUpdate((tx, state) => {
         setTxDrawExpanded(true);
@@ -179,7 +179,7 @@ function TransactionManagerProvider({ children }) {
       });
 
     return () => sub.unsub();
-  }, [taker, lang]);
+  }, [maker, lang]);
 
   return (
     <TransactionManagerContext.Provider

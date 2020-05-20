@@ -6,15 +6,15 @@ import {
   act
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { BAT, USD, MTAO } from '@takertao/tao-plugin-mct';
+import { BAT, USD, MDAI } from '@takertao/dai-plugin-mcd';
 import { createCurrencyRatio } from '@makerdao/currency';
 import { TestAccountProvider, mineBlocks } from '@makerdao/test-helpers';
-import * as math from '@takertao/tao-plugin-mct/dist/math';
+import * as math from '@takertao/dai-plugin-mcd/dist/math';
 import waitForExpect from 'wait-for-expect';
 
 import Payback from '../Payback';
 import { renderWithMaker } from '../../../../test/helpers/render';
-import useTaker from '../../../hooks/useTaker';
+import useMaker from '../../../hooks/useMaker';
 import lang from '../../../languages';
 
 jest.mock('react-navi', () => ({
@@ -28,14 +28,14 @@ const LIQUIDATION_RATIO = '200';
 const COL_AMT = 300.123456789012345678;
 
 const collateralAmount = BAT(0); //only used to retrieve gem symbol
-const liquidationRatio = createCurrencyRatio(USD, MTAO)(LIQUIDATION_RATIO);
+const liquidationRatio = createCurrencyRatio(USD, MDAI)(LIQUIDATION_RATIO);
 const collateralValue = USD(12004.938271560493);
 
 const mockVault = {
   id: 1,
   collateralType: ILK,
-  debtValue: MTAO(0),
-  daiAvailable: MTAO(36.014814),
+  debtValue: MDAI(0),
+  daiAvailable: MDAI(36.014814),
   vaultType: ILK,
   collateralAmount,
   liquidationRatio,
@@ -55,8 +55,8 @@ let web3;
 
 const SetupProxyAndAllowance = () => {
   const [changedAccount, setAccountChanged] = useState(false);
-  const { taker } = useTaker();
-  web3 = taker.service('web3');
+  const { maker } = useMaker();
+  web3 = maker.service('web3');
 
   const changeAccount = async () => {
     const accountService = maker.service('accounts');

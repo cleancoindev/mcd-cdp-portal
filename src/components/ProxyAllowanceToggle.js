@@ -41,7 +41,7 @@ const ProxyAllowanceToggle = ({
     (hasFetchedAllowance && !hasAllowance);
 
   const tokenDisplayName =
-    token === 'MTAO' ? 'TAO' : token === 'MWETH' ? 'WETH' : token;
+    token === 'MDAI' ? 'TAO' : token === 'MWETH' ? 'WETH' : token;
   return showToggles ? (
     <Grid gridRowGap="s" data-testid="toggle-container">
       {showProxy && (

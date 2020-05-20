@@ -7,12 +7,12 @@ import {
   waitForElement
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { MTAO, ETH } from '@takertao/tao-plugin-mct';
+import { MDAI, ETH } from '@takertao/dai-plugin-mcd';
 import { mineBlocks } from '@makerdao/test-helpers';
 
 import CDPDisplay from '../';
 import { renderWithAccount } from '../../../../test/helpers/render';
-import { instantiateTaker } from '../../../taker';
+import { instantiateMaker } from '../../../maker';
 import { SidebarProvider } from '../../../providers/SidebarProvider';
 import SidebarBase from 'components/SidebarBase';
 import * as navi from 'react-navi';
@@ -28,7 +28,7 @@ const ILK = 'ETH-A';
 const VAULT1_ETH = '5';
 const AMOUNT = 210;
 
-let taker;
+let maker;
 let web3;
 
 beforeAll(async () => {
@@ -36,7 +36,7 @@ beforeAll(async () => {
   web3 = maker.service('web3');
   await maker
     .service('mcd:cdpManager')
-    .openLockAndDraw(ILK, ETH(VAULT1_ETH), MTAO(AMOUNT));
+    .openLockAndDraw(ILK, ETH(VAULT1_ETH), MDAI(AMOUNT));
 });
 
 afterEach(cleanup);
@@ -75,7 +75,7 @@ test('Vault Display page and actions', async () => {
       .nextElementSibling.textContent;
 
   expect(getEthBal()).toContain('89.');
-  expect(getEthUsdValue()).toBe('$13.5K');
+  expect(getEthUsdValue()).toBe('$13.4K');
   expect(getDaiBal()).toContain('210.');
   expect(getDaiUsdValue()).toBe('$210.00');
 
